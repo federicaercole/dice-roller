@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Die } from './components/Die';
-import './App.css'
+import { DieBtn } from './components/DieBtn';
 
 function App() {
   const dieSize = [2, 4, 6, 8, 10, 12, 20, 100];
@@ -23,13 +23,19 @@ function App() {
   }
 
   return (
-    <>
-      {dieSize.map((die) => <Die addDice={addDice} dieSize={die} key={`d${die}`} />)}
-      {rolledNumbers.map((item, index) => <p key={`die-${index}`}>{item}</p>)}
-      {dice.length != 0 && <button type="button" onClick={() => roll()}>Roll dice</button>}
-      {dice.length != 0 && <button type="button" onClick={() => reset()}>Reset</button>}
-      <p>{sum !== 0 && sum}</p>
-    </>
+    <main>
+      <ul>
+        {dice.map((die, index) => <Die key={`die-${index}`} index={index} dieSize={die} rolledNumbers={rolledNumbers} />)}
+      </ul>
+      <p className="sum">{sum !== 0 && sum}</p>
+      <div className="buttons">
+        {dice.length != 0 && <button type="button" onClick={() => roll()}>Roll dice</button>}
+        {dice.length != 0 && <button type="button" onClick={() => reset()}>Reset</button>}
+      </div>
+      <div className="buttons">
+        {dieSize.map((die) => <DieBtn addDice={addDice} dieSize={die} key={`d${die}`} />)}
+      </div>
+    </main>
   )
 }
 
