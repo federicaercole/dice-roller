@@ -1,3 +1,12 @@
-<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-    <path d="M276.97,55.775C274.293,54.23 271.027,54.23 268.349,55.775L90.105,158.685C87.325,160.29 85.604,163.314 85.604,166.594L85.604,372.414C85.604,375.694 87.325,378.718 90.105,380.323L268.349,483.233C271.027,484.779 274.293,484.779 276.97,483.233L455.215,380.323C457.994,378.718 459.715,375.694 459.715,372.414L459.715,166.594C459.715,163.314 457.994,160.29 455.215,158.685L276.97,55.775Z" />
+<svg viewBox="0 0 42 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.99726 31L34.9845 31L20.9909 9L6.99726 31Z" stroke-linejoin="round"/>
+<path d="M20.9909 1V9L40.9817 11L20.9909 1Z" stroke-linejoin="round"/>
+<path d="M20.9909 1V9L1 11L20.9909 1Z" stroke-linejoin="round"/>
+<path d="M40.9817 11L34.9845 31L40.9817 35L40.9817 11Z" stroke-linejoin="round"/>
+<path d="M20.9909 8.99999L34.9845 31L40.9817 11.0112L20.9909 8.99999Z" stroke-linejoin="round"/>
+<path d="M40.9817 35L34.9845 31L20.9909 47L40.9817 35Z" stroke-linejoin="round"/>
+<path d="M1 11L6.99726 31L1 34L1 11Z" stroke-linejoin="round"/>
+<path d="M20.9909 9L6.99726 31L1 11.0167L20.9909 9Z" stroke-linejoin="round"/>
+<path d="M1 34L6.99726 31L20.9909 47L1 34Z" stroke-linejoin="round"/>
+<path d="M21.0064 47L35 31L7.01278 31L21.0064 47Z" stroke-linejoin="round"/>
 </svg>
