@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Outfit:wght@100..900&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,114 +7,138 @@
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --primary-color: #00D6A7;
+  --bg-color-900: #143141;
+  --bg-color-800: #1D465C;
+  --fs-0: clamp(1.125rem, 1.0795rem + 0.2273vi, 1.25rem);
+  --fs-1: clamp(1.35rem, 1.1982rem + 0.7591vi, 1.7675rem);
+  --fs-2: clamp(1.62rem, 1.3003rem + 1.5986vi, 2.4992rem);
+  --fs-3: clamp(1.944rem, 1.3658rem + 2.8908vi, 3.5339rem);
+  --fs-4: clamp(2.3328rem, 1.364rem + 4.844vi, 4.997rem);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+main>*+* {
+  margin-block-start: 2rem;
 }
 
-a:hover {
-  color: #535bf2;
+ul>*+* {
+  margin-block-start: 1.5rem;
 }
 
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  grid-template-columns: 1fr;
   min-height: 100vh;
+  font-family: "Lexend Deca", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: var(--fs-1);
+  color: var(--primary-color);
+  background-color: var(--bg-color-900);
 }
 
 #root {
   max-width: 1200px;
+  padding: 2rem;
+  width: 100%;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+svg {
+  fill: var(--primary-color);
+  stroke: var(--bg-color-900);
+  height: 48px;
+  width: auto;
+}
+
+/*Buttons*/
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  border-radius: 10px;
+  padding: 0.5rem 1.5rem;
   font-weight: 500;
+  color: var(--primary-color);
   font-family: inherit;
-  background-color: #1a1a1a;
+  font-size: var(--fs-2);
+  background-color: var(--bg-color-900);
+  border: 2px solid var(--primary-color);
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 2rem;
 }
 
-svg {
-  fill: red;
-  height: 96px;
-  width: auto;
+.action {
+  font-size: var(--fs-1);
+  padding: 0.5rem 1rem;
+  gap: 0.1rem;
+  font-weight: 400;
 }
 
+.action svg {
+  height: 32px;
+}
+
+/*Dice button container*/
+.dice {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  width: 100%;
+  background-color: var(--bg-color-800);
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.dice button {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+.dice button svg {
+  height: max(4rem, 5vw);
+}
+
+.dice svg g {
+  fill: var(--bg-color-900);
+}
+
+/*Dice rolls*/
 ul {
   list-style: none;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
+  width: max-content;
+  height: 260px;
+  overflow: hidden;
 }
 
 li {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 
-li span,
-.sum {
-  font-size: 40px;
+li button {
+  flex: 1 1 0px;
 }
 
 .sum {
+  border-radius: 10px;
+  padding: 0.5rem 6rem;
+  font-size: var(--fs-4);
   text-align: center;
+  background-color: var(--bg-color-800);
 }
