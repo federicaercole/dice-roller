@@ -29,10 +29,10 @@ function App() {
       <ul>
         {dice.map((die, index) => <Die key={`die-${index}`} index={index} dieSize={die} rolledNumbers={rolledNumbers} />)}
       </ul>
-      {sum !== 0 && <p className="sum">{sum}</p>}
+      <p className="sum">{sum}</p>
       <div className="buttons">
-        {dice.length != 0 && <button type="button" className="action" onClick={() => reset()}><Close /> Reset</button>}
-        {dice.length != 0 && <button type="button" className="action" onClick={() => roll()}><RollDie /> Roll</button>}
+        {dice.length > 0 && <button type="button" className="action" onClick={() => reset()}><Close /> Reset</button>}
+        {dice.length > 0 && <button type="button" className="action" onClick={() => roll()}><RollDie /> Roll</button>}
       </div>
       <div className="buttons dice">
         {dieSize.map((die) => <DieBtn addDice={addDice} dieSize={die} key={`d${die}`} />)}

@@ -30,7 +30,8 @@ body {
   align-content: end;
   justify-items: center;
   grid-template-columns: 1fr;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   font-family: "Lexend Deca", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -42,7 +43,7 @@ body {
 
 #root {
   max-width: 1200px;
-  padding: 2rem;
+  padding: 1rem;
   width: 100%;
 }
 
@@ -81,6 +82,7 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
+  min-height: 56px;
 }
 
 .action {
@@ -97,11 +99,13 @@ button {
 /*Dice button container*/
 .dice {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
   width: 100%;
+  max-width: min(400px, 100%);
   background-color: var(--bg-color-800);
-  padding: 2rem;
+  padding: clamp(1rem, 5%, 2rem);
   border-radius: 10px;
+  gap: 1rem;
 }
 
 .dice button {
@@ -121,14 +125,16 @@ button {
 /*Dice rolls*/
 ul {
   list-style: none;
-  width: max-content;
-  height: 260px;
-  overflow: hidden;
+  height: 30vh;
+  height: 30dvh;
+  overflow-y: auto;
+  padding-inline: 2rem;
 }
 
 li {
   display: flex;
   justify-content: center;
+  min-width: 170px;
 }
 
 li button {
@@ -141,4 +147,10 @@ li button {
   font-size: var(--fs-4);
   text-align: center;
   background-color: var(--bg-color-800);
+}
+
+@media screen and (min-width: 800px) {
+  .dice {
+    max-width: min(1200px, 100%);
+  }
 }
