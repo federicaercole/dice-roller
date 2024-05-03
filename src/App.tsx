@@ -29,17 +29,18 @@ function App() {
       id: dice.length + 1,
       size: size,
       rolledNumber: null,
+      isLocked: false
     }]);
   }
 
   function reset() {
-    setDice([]);
+    setDice(dice.filter(item => item.isLocked === true));
   }
 
   return (
     <main>
       <ul>
-        {dice.map(die => <Die key={`die-${die.id}`} die={die} />)}
+        {dice.map(die => <Die key={`die-${die.id}`} die={die} dice={dice} setDice={setDice} />)}
       </ul>
       <p className="sum">{sum}</p>
       <div className="buttons">

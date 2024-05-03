@@ -5,13 +5,35 @@ import D8 from "../assets/svg/d8.svg";
 import D10 from "../assets/svg/d10.svg";
 import D12 from "../assets/svg/d12.svg";
 import D20 from "../assets/svg/d20.svg";
+import Delete from "../assets/svg/delete.svg";
+import Lock from "../assets/svg/lock.svg";
+import Unlock from "../assets/svg/unlock.svg";
+import { DieInt } from "./types";
+import { useState } from "react";
+
 interface Props {
-    index: number,
-    dieSize: number,
-    rolledNumbers: number[],
+    die: DieInt,
+    dice: DieInt[],
+    setDice: (value: React.SetStateAction<DieInt[]>) => void
 }
 
-export function Die({ index, dieSize, rolledNumbers }: Props) {
+export function Die({ die, dice, setDice }: Props) {
+    const [isOpened, setIsOpened] = useState<boolean>(false);
+
+    function deleteDie(id: number) {
+        setDice(dice.filter(item => id !== item.id));
+    }
+
+    function lockDie(id: number) {
+        const array = dice.map(item => {
+            if (item.id === id) {
+                return { ...item, isLocked: !item.isLocked }
+            } else {
+                return item;
+            }
+        });
+        setDice(array);
+    }
 
     function printDieSVG(dieSize: number): React.ReactNode {
         switch (dieSize) {
@@ -33,9 +55,15 @@ export function Die({ index, dieSize, rolledNumbers }: Props) {
         }
     }
 
-    return (
-        <li>
-            <button type="button">{rolledNumbers[index] ? rolledNumbers[index] : "?"} {printDieSVG(dieSize)}</button>
-        </li>
-    )
+    return (<li>
+        <button type="button" onClick={() => setIsOpened(!isOpened)}>{die.rolledNumber ? die.rolledNumber : "?"} {printDieSVG(die.size)}
+            {die.isLocked && <><Lock /><span className="visually-hidden">Locked die</span></>}</button>
+        {isOpened && <div className="dropdown">
+            <button type="button" onClick={() => lockDie(die.id)}>
+                {die.isLocked ? <Unlock /> : <Lock />}
+                {die.isLocked ? "Unlock" : "Lock"}
+                <span className="visually-hidden">this d{die.size}</span></button>
+            <button type="button" onClick={() => deleteDie(die.id)}><Delete /> Delete <span className="visually-hidden">this d{die.size}</span></button>
+        </div>}
+    </li>)
 }
