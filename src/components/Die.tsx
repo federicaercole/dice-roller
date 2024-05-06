@@ -10,7 +10,7 @@ import Lock from "../assets/svg/lock.svg";
 import Unlock from "../assets/svg/unlock.svg";
 import Expand from "../assets/svg/expand.svg";
 import { DieInt } from "./types";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface Props {
     die: DieInt,
@@ -20,10 +20,33 @@ interface Props {
 
 export function Die({ die, dice, setDice }: Props) {
     const [isOpened, setIsOpened] = useState<boolean>(false);
+    const openedMenu = useRef<HTMLDivElement>(null);
+    const clickedBtn = useRef<HTMLButtonElement>(null);
 
     function deleteDie(id: number) {
         setDice(dice.filter(item => id !== item.id));
     }
+
+    useEffect(() => {
+        function closeOpenedMenuWhenClickingOutside(event: MouseEvent | KeyboardEvent) {
+            if (!openedMenu.current?.contains(event.target as Node) && event.target !== clickedBtn.current) {
+                setIsOpened(false);
+            }
+        }
+
+        function closeOpenedMenuWhenUsingKeyboard(event: KeyboardEvent) {
+            if (event.key === "Enter") {
+                closeOpenedMenuWhenClickingOutside(event);
+            }
+        }
+
+        document.addEventListener("mousedown", closeOpenedMenuWhenClickingOutside);
+        document.addEventListener("keydown", closeOpenedMenuWhenUsingKeyboard);
+        return () => {
+            document.removeEventListener("mousedown", closeOpenedMenuWhenClickingOutside);
+            document.removeEventListener("keydown", closeOpenedMenuWhenUsingKeyboard);
+        }
+    }, [])
 
     function lockDie(id: number) {
         const array = dice.map(item => {
@@ -60,13 +83,13 @@ export function Die({ die, dice, setDice }: Props) {
         <li>
             <span>{die.rolledNumber ? die.rolledNumber : "?"} {printDieSVG(die.size)}</span>
             {die.isLocked && <><Lock /><span className="visually-hidden">Locked die</span></>}
-            <button type="button" onClick={() => setIsOpened(!isOpened)} className="expand" aria-haspopup="true" aria-expanded={isOpened} aria-controls={`die-${die.id}-ctrl`} aria-label="Expand for more options"><Expand /></button>
+            <button type="button" onClick={() => setIsOpened(!isOpened)} ref={clickedBtn}
+                className="expand" aria-haspopup="true" aria-expanded={isOpened} aria-controls={`die-${die.id}-ctrl`} aria-label="Expand for more options"><Expand /></button>
         </li>
-        {isOpened && <div className="dropdown" id={`die-${die.id}-ctrl`}>
+        {isOpened && <div className="dropdown" id={`die-${die.id}-ctrl`} ref={openedMenu}>
             <button type="button" onClick={() => lockDie(die.id)}>
                 {die.isLocked ? <Unlock /> : <Lock />}
-                {die.isLocked ? "Unlock" : "Lock"}
-                <span className="visually-hidden">this d{die.size}</span></button>
+                {die.isLocked ? "Unlock" : "Lock"} <span className="visually-hidden">this d{die.size}</span></button>
             <button type="button" onClick={() => deleteDie(die.id)}><Delete /> Delete <span className="visually-hidden">this d{die.size}</span></button>
         </div>}
     </>)

@@ -64,6 +64,7 @@ svg {
   stroke: var(--bg-color-900);
   height: 48px;
   width: auto;
+  pointer-events: none;
 }
 
 /*Buttons*/
