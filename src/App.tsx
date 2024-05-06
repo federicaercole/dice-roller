@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Die } from './components/Die';
 import { DieBtn } from './components/DieBtn';
 import Close from "./assets/svg/close.svg";
@@ -9,6 +9,7 @@ function App() {
   const dieSize = [2, 4, 6, 8, 10, 12, 20, 100];
   const [dice, setDice] = useState<DieInt[]>([]);
   const sum = dice.reduce(sumRolls, 0);
+  const numberOfDice = useRef(0);
 
   function roll() {
     const randomNubers = dice.map((die) => {
@@ -24,9 +25,14 @@ function App() {
     return 0;
   }
 
+  function getId() {
+    numberOfDice.current += 1;
+    return numberOfDice.current;
+  }
+
   function addDice(size: number): void {
     setDice([...dice, {
-      id: dice.length + 1,
+      id: getId(),
       size: size,
       rolledNumber: null,
       isLocked: false
