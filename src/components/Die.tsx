@@ -8,6 +8,7 @@ import D20 from "../assets/svg/d20.svg";
 import Delete from "../assets/svg/delete.svg";
 import Lock from "../assets/svg/lock.svg";
 import Unlock from "../assets/svg/unlock.svg";
+import Expand from "../assets/svg/expand.svg";
 import { DieInt } from "./types";
 import { useState } from "react";
 
@@ -55,15 +56,18 @@ export function Die({ die, dice, setDice }: Props) {
         }
     }
 
-    return (<li>
-        <button type="button" onClick={() => setIsOpened(!isOpened)}>{die.rolledNumber ? die.rolledNumber : "?"} {printDieSVG(die.size)}
-            {die.isLocked && <><Lock /><span className="visually-hidden">Locked die</span></>}</button>
-        {isOpened && <div className="dropdown">
+    return (<>
+        <li>
+            <span>{die.rolledNumber ? die.rolledNumber : "?"} {printDieSVG(die.size)}</span>
+            {die.isLocked && <><Lock /><span className="visually-hidden">Locked die</span></>}
+            <button type="button" onClick={() => setIsOpened(!isOpened)} className="expand" aria-haspopup="true" aria-expanded={isOpened} aria-controls={`die-${die.id}-ctrl`} aria-label="Expand for more options"><Expand /></button>
+        </li>
+        {isOpened && <div className="dropdown" id={`die-${die.id}-ctrl`}>
             <button type="button" onClick={() => lockDie(die.id)}>
                 {die.isLocked ? <Unlock /> : <Lock />}
                 {die.isLocked ? "Unlock" : "Lock"}
                 <span className="visually-hidden">this d{die.size}</span></button>
             <button type="button" onClick={() => deleteDie(die.id)}><Delete /> Delete <span className="visually-hidden">this d{die.size}</span></button>
         </div>}
-    </li>)
+    </>)
 }
