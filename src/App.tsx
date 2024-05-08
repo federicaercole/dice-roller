@@ -1,9 +1,13 @@
 import { useState, useRef } from 'react'
+import { Menu } from './components/Menu';
 import { Die } from './components/Die';
 import { DieBtn } from './components/DieBtn';
 import Close from "./assets/svg/close.svg";
 import RollDie from "./assets/svg/rollDie.svg";
 import { DieInt } from "./components/types";
+
+import { Random, MersenneTwister19937 } from "random-js";
+const random = new Random(MersenneTwister19937.autoSeed());
 
 function App() {
   const dieSize = [2, 4, 6, 8, 10, 12, 20, 100];
@@ -13,7 +17,7 @@ function App() {
 
   function roll() {
     const randomNubers = dice.map((die) => {
-      return { ...die, rolledNumber: Math.floor(Math.random() * die.size) + 1 }
+      return { ...die, rolledNumber: random.integer(1, die.size) }
     });
     return setDice(randomNubers);
   }
@@ -43,7 +47,7 @@ function App() {
     setDice(dice.filter(item => item.isLocked === true));
   }
 
-  return (
+  return (<>
     <main>
       <ul>
         {dice.map(die => <Die key={`die-${die.id}`} die={die} dice={dice} setDice={setDice} />)}
@@ -57,7 +61,8 @@ function App() {
         {dieSize.map((die) => <DieBtn addDice={addDice} dieSize={die} key={`d${die}`} />)}
       </div>
     </main>
-  )
+    <Menu />
+  </>)
 }
 
 export default App
