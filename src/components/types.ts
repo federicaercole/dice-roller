@@ -4,3 +4,8 @@ export interface DieInt {
     rolledNumber: null | number,
     isLocked: boolean
 }
+
+export interface DiceStore {
+    dice: DieInt[],
+    numberOfDice: number,
+}

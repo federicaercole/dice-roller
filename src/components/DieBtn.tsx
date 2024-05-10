@@ -6,12 +6,23 @@ import D10wn from "../assets/svg/d10wn.svg"
 import D12wn from "../assets/svg/d12wn.svg"
 import D20wn from "../assets/svg/d20wn.svg"
 import D100wn from "../assets/svg/d100wn.svg"
+import { useDiceStore } from "./DiceStore"
+
 interface Props {
-    addDice: (size: number) => void,
     dieSize: number
 }
 
-export function DieBtn({ addDice, dieSize }: Props) {
+export function DieBtn({ dieSize }: Props) {
+
+    const addDie = (size: number) => useDiceStore.setState(state => ({
+        numberOfDice: ++state.numberOfDice,
+        dice: [...state.dice, {
+            id: state.numberOfDice,
+            size: size,
+            rolledNumber: null,
+            isLocked: false
+        }],
+    }))
 
     function printDieSVG(dieSize: number): React.ReactNode {
         switch (dieSize) {
@@ -35,6 +46,6 @@ export function DieBtn({ addDice, dieSize }: Props) {
     }
 
     return (
-        <button type="button" onClick={() => addDice(dieSize)}>{printDieSVG(dieSize)}</button>
+        <button type="button" onClick={() => addDie(dieSize)}>{printDieSVG(dieSize)}</button>
     )
 }

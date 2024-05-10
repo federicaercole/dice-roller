@@ -11,21 +11,26 @@ import Unlock from "../assets/svg/unlock.svg";
 import Expand from "../assets/svg/expand.svg";
 import { DieInt } from "./types";
 import { useState, useRef, useEffect } from "react";
+import { useDiceStore } from "./DiceStore";
 
 interface Props {
     die: DieInt,
-    dice: DieInt[],
-    setDice: (value: React.SetStateAction<DieInt[]>) => void
 }
 
-export function Die({ die, dice, setDice }: Props) {
+export function Die({ die }: Props) {
     const [isOpened, setIsOpened] = useState<boolean>(false);
     const openedMenu = useRef<HTMLDivElement>(null);
     const clickedBtn = useRef<HTMLButtonElement>(null);
 
-    function deleteDie(id: number) {
-        setDice(dice.filter(item => id !== item.id));
-    }
+    const deleteDie = (id: number) => useDiceStore.setState(state => ({ dice: state.dice.filter(item => id !== item.id) }));
+    const lockDie = (id: number) => useDiceStore.setState(state => ({
+        dice: state.dice.map(item => {
+            if (item.id === id) {
+                return { ...item, isLocked: !item.isLocked };
+            }
+            return item;
+        })
+    }));
 
     useEffect(() => {
         function closeOpenedMenuWhenClickingOutside(event: MouseEvent | KeyboardEvent) {
@@ -47,17 +52,6 @@ export function Die({ die, dice, setDice }: Props) {
             document.removeEventListener("keydown", closeOpenedMenuWhenUsingKeyboard);
         }
     }, [])
-
-    function lockDie(id: number) {
-        const array = dice.map(item => {
-            if (item.id === id) {
-                return { ...item, isLocked: !item.isLocked }
-            } else {
-                return item;
-            }
-        });
-        setDice(array);
-    }
 
     function printDieSVG(dieSize: number): React.ReactNode {
         switch (dieSize) {
