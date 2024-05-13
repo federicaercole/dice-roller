@@ -35,9 +35,8 @@ body {
   display: grid;
   align-content: end;
   justify-items: center;
-  grid-template-columns: 1fr;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   font-family: "Lexend Deca", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -51,6 +50,26 @@ body {
   max-width: 1200px;
   padding: 1rem;
   width: 100%;
+}
+
+#root>*+* {
+  margin-block-start: 2rem;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  height: auto;
+  font-size: var(--fs-0);
+}
+
+nav li {
+  border: 0;
+}
+
+nav li+li {
+  margin: 0;
 }
 
 main {
@@ -132,8 +151,8 @@ button {
 /*Dice rolls*/
 ul {
   list-style: none;
-  height: 30vh;
-  height: 30dvh;
+  height: 35vh;
+  height: 35dvh;
   overflow-y: auto;
   padding-inline: 1rem;
   min-width: 250px;
@@ -178,6 +197,51 @@ li span {
   background-color: var(--bg-color-800);
 }
 
+.rolls,
+.sum {
+  visibility: hidden;
+}
+
+*.show {
+  visibility: visible;
+}
+
+button[role="switch"] {
+  border: 0;
+  font-size: var(--fs-0);
+}
+
+.switch {
+  --radius: 30px;
+  height: 24px;
+  width: 50px;
+  border-radius: var(--radius);
+  border: 2px solid var(--primary-color);
+  background: var(--bg-color-800);
+  display: flex;
+  align-items: center;
+  transition: background-color 0.25s ease;
+}
+
+button[aria-checked="true"] .switch {
+  background: var(--primary-color);
+}
+
+button[role="switch"] .switch::after {
+  content: "";
+  height: 16px;
+  width: 16px;
+  border: 2px solid var(--bg-color-800);
+  background: white;
+  border-radius: var(--radius);
+  transform: translateX(0);
+  transition: transform 0.25s ease;
+}
+
+button[aria-checked="true"] .switch::after {
+  transform: translateX(26px);
+}
+
 /*Dropdown menus*/
 .dropdown {
   display: grid;
@@ -210,8 +274,8 @@ li>svg {
 }
 
 /*States*/
-button:hover,
-button:active {
+button:not([role="switch"]):hover,
+button:not([role="switch"]):active {
   background-color: var(--primary-color);
   color: var(--bg-color-900);
 }
@@ -238,4 +302,13 @@ button:active svg {
   .dice {
     max-width: min(1200px, 100%);
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .switch,
+  .switch::after {
+    transition: none;
+  }
+
 }
