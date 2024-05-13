@@ -5,13 +5,22 @@ import { persist } from 'zustand/middleware';
 const initialState: DiceStore = {
     dice: [],
     numberOfDice: 0,
+    settings: {
+        visibility: {
+            sum: true,
+            rolls: true,
+        },
+    }
 }
 
 export const useDiceStore = create<typeof initialState>()(
     persist(() => (initialState),
         {
             name: "dice",
-            partialize: (state) => ({ dice: state.dice }),
+            partialize: state =>
+                Object.fromEntries(
+                    Object.entries(state).filter(([key]) => !['numberOfDice'].includes(key)),
+                ),
         }
     )
 );

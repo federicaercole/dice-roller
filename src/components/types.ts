@@ -5,7 +5,14 @@ export interface DieInt {
     isLocked: boolean
 }
 
+interface Settings {
+    visibility: {
+        [key: string]: boolean;
+    },
+}
+
 export interface DiceStore {
     dice: DieInt[],
     numberOfDice: number,
+    settings: Settings,
 }
