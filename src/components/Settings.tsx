@@ -1,40 +1,43 @@
 import { useDiceStore } from "./DiceStore"
 import { produce } from "immer";
 import Add from "../assets/svg/add.svg";
-import { printDieSVG } from "./utils";
-import useOpenedStatus from "./useOpenedStatus";
-import { useRef } from "react";
-import Expand from "../assets/svg/expand.svg";
-import Delete from "../assets/svg/delete.svg";
-import Edit from "../assets/svg/edit.svg";
-import Load from "../assets/svg/load.svg";
+import { v4 as uuidv4 } from 'uuid';
+import DiceSet from "./DiceSet";
+import useFormInput from "./useFormInput";
 
 function Settings() {
-    const openedMenu = useRef<HTMLDivElement>(null);
-    const clickedBtn = useRef<HTMLButtonElement>(null);
+    const setName = useFormInput("");
+    const diceSet = useFormInput("");
 
-    const { isOpened, setIsOpened } = useOpenedStatus(openedMenu, clickedBtn);
     const { settings } = useDiceStore();
     const toggleVisibility = (value: string) => useDiceStore.setState(produce(state => { state.settings.visibility[value] = !state.settings.visibility[value] }));
 
-    function countDice() {
-        const diceSizeMap = settings.sets.flatMap(item => item.dice.flatMap(item => item.size));
-        const diceCount = diceSizeMap.reduce((obj: { [key: string]: number }, item) => {
-            if (!obj[item]) {
-                obj[item] = 0;
+    function getDice(diceSizes: string[]) {
+        const dice = [];
+        for (const die of diceSizes) {
+            const numberOfDice = Number(die.split("d")[0]);
+            const size = Number(die.split("d")[1]);
+            for (let i = 0; i < numberOfDice; i++) {
+                dice.push({
+                    id: uuidv4(),
+                    size: size,
+                    rolledNumber: null,
+                    isLocked: false
+                });
             }
-            obj[item]++;
-            return obj;
-        }, {})
-        return diceCount;
+        }
+        return dice;
     }
 
-    function printDice() {
-        const obj = countDice();
-        for (const key in obj) {
-            return (<span aria-hidden="true" aria-label={`${obj[key]}d${key}`}>{obj[key]} x {printDieSVG(Number(key))}</span>)
-        }
-    }
+    const addDiceToSet = (size: string) => {
+        const dice = size.replace(/\s/g, "").split("+");
+        useDiceStore.setState(produce(state => {
+            state.settings.sets = [...state.settings.sets, {
+                name: setName.value,
+                dice: getDice(dice)
+            }]
+        }))
+    };
 
     return (<>
         <h1>Settings</h1>
@@ -47,24 +50,15 @@ function Settings() {
         <section>
             <header>
                 <h2>Dice Sets</h2>
-                <button type="button"><Add /><span className="visually-hidden">Add a new set</span></button>
+                <button type="button" ><Add /><span className="visually-hidden">Add a new set</span></button>
+                <label htmlFor="name">Set name</label>
+                <input type="text" id="name" {...setName} />
+                <label htmlFor="dice">Dice (example: 4d6 + 1d8)</label>
+                <input type="text" id="dice" {...diceSet} />
+                <button type="button" onClick={() => addDiceToSet(diceSet.value)}>Save set</button>
             </header>
-            {settings.sets.map((set) =>
-                <article key={set.name}>
-                    <header><h3>{set.name}</h3>
-                        <button type="button" onClick={() => setIsOpened(!isOpened)} ref={clickedBtn}
-                            className="expand" aria-haspopup="true" aria-expanded={isOpened} aria-controls={set.name.toLowerCase().replace(/\s+/g, "-")} aria-label="Expand for more options"><Expand /></button>
-                        {isOpened && <div className="dropdown" id={set.name.toLowerCase().replace(/\s+/g, "-")} ref={openedMenu}>
-                            <button type="button" ><Load /> Load <span className="visually-hidden">{set.name}</span></button>
-                            <button type="button" ><Edit /> Edit <span className="visually-hidden">{set.name}</span></button>
-                            <button type="button" ><Delete /> Delete <span className="visually-hidden">{set.name}</span></button>
-                        </div>}
-                    </header>
-                    <div>
-                        {printDice()}
-                    </div>
-                </article>)}
-        </section>
+            {settings.sets.map((set) => <DiceSet key={set.name} set={set} />)}
+        </section >
     </>)
 }
 

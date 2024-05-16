@@ -13,7 +13,6 @@ import { DieInt } from "./types";
 import useOpenedStatus from "./useOpenedStatus";
 import { useDiceStore } from "./DiceStore";
 import { useRef } from "react";
-
 interface Props {
     die: DieInt,
 }
@@ -24,8 +23,8 @@ export function Die({ die }: Props) {
 
     const { isOpened, setIsOpened } = useOpenedStatus(openedMenu, clickedBtn);
 
-    const deleteDie = (id: number) => useDiceStore.setState(state => ({ dice: state.dice.filter(item => id !== item.id) }));
-    const lockDie = (id: number) => useDiceStore.setState(state => ({
+    const deleteDie = (id: string) => useDiceStore.setState(state => ({ dice: state.dice.filter(item => id !== item.id) }));
+    const lockDie = (id: string) => useDiceStore.setState(state => ({
         dice: state.dice.map(item => {
             if (item.id === id) {
                 return { ...item, isLocked: !item.isLocked };

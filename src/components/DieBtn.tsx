@@ -1,5 +1,6 @@
 import { useDiceStore } from "./DiceStore"
 import { printDieSVG } from "./utils"
+import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
     dieSize: number
@@ -8,9 +9,8 @@ interface Props {
 export function DieBtn({ dieSize }: Props) {
 
     const addDie = (size: number) => useDiceStore.setState(state => ({
-        numberOfDice: ++state.numberOfDice,
         dice: [...state.dice, {
-            id: state.numberOfDice,
+            id: uuidv4(),
             size: size,
             rolledNumber: null,
             isLocked: false
