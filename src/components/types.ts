@@ -18,3 +18,7 @@ export interface DiceStore {
     dice: DieInt[],
     settings: Settings,
 }
+export interface ModalInt {
+    modal: string,
+    set?: DiceSetInt,
+}
