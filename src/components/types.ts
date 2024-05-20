@@ -22,3 +22,5 @@ export interface ModalInt {
     modal: string,
     set?: DiceSetInt,
 }
+
+export type MessageOutletContext = [message: string, setMessage: React.Dispatch<React.SetStateAction<string>>];

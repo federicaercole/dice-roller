@@ -1,8 +1,7 @@
 import { useRef } from "react";
 import Close from "../assets/svg/close.svg";
-import { AddNewModal, LoadModal, DeleteModal } from "./ModalContent";
-import { DiceSetInt, ModalInt } from "./types";
-
+import { ModalInt } from "./types";
+import { ModalContent } from "./ModalContent";
 interface Props {
     setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
     modalContent: ModalInt;
@@ -45,17 +44,6 @@ function Modal({ setIsOpened, modalContent }: Props) {
         }
     }
 
-    function printContent() {
-        switch (modalContent.modal) {
-            case "add":
-                return <AddNewModal setIsOpened={setIsOpened} setRef={setFocusableElements} />;
-            case "load":
-                return <LoadModal setIsOpened={setIsOpened} set={modalContent.set as DiceSetInt} setRef={setFocusableElements} />;
-            case "delete":
-                return <DeleteModal setIsOpened={setIsOpened} set={modalContent.set as DiceSetInt} setRef={setFocusableElements} />;
-        }
-    }
-
     function printModalTitle() {
         switch (modalContent.modal) {
             case "add":
@@ -71,7 +59,7 @@ function Modal({ setIsOpened, modalContent }: Props) {
         <div>
             <h2 id="dialog-title">{printModalTitle()}</h2>
             <button type="button" ref={setFocusableElements} onClick={() => setIsOpened(false)} autoFocus><Close /><span className="visually-hidden">Close</span></button>
-            {printContent()}
+            <ModalContent content={modalContent} setIsOpened={setIsOpened} setRef={setFocusableElements} />
         </div>
     </div>)
 }
