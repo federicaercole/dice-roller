@@ -6,6 +6,8 @@ import Edit from "../assets/svg/edit.svg";
 import Load from "../assets/svg/load.svg";
 import { printDieSVG } from "./utils";
 import { DiceSetInt, DieInt, ModalInt } from "./types";
+import { countDice } from "./utils";
+
 interface Props {
     set: DiceSetInt,
     setModalContent: React.Dispatch<React.SetStateAction<ModalInt>>,
@@ -16,18 +18,6 @@ function DiceSet({ set, setModalContent, setIsModalOpened }: Props) {
     const openedMenu = useRef<HTMLDivElement>(null);
     const clickedBtn = useRef<HTMLButtonElement>(null);
     const { isOpened, setIsOpened } = useOpenedStatus(openedMenu, clickedBtn);
-
-    function countDice(setDice: DieInt[]) {
-        const diceSizeMap = setDice.map(item => item.size);
-        const diceCount = diceSizeMap.reduce((obj: { [key: string]: number }, item) => {
-            if (!obj[item]) {
-                obj[item] = 0;
-            }
-            obj[item]++;
-            return obj;
-        }, {})
-        return diceCount;
-    }
 
     function printDice(setDice: DieInt[]) {
         const obj = countDice(setDice);
@@ -44,7 +34,7 @@ function DiceSet({ set, setModalContent, setIsModalOpened }: Props) {
                 className="expand" aria-haspopup="true" aria-expanded={isOpened} aria-controls={set.name.toLowerCase().replace(/\s+/g, "-")} aria-label="Expand for more options"><Expand /></button>
             {isOpened && <div className="dropdown" id={set.name.toLowerCase().replace(/\s+/g, "-")} ref={openedMenu}>
                 <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "load", set: set }) }} ><Load /> Load <span className="visually-hidden">{set.name}</span></button>
-                <button type="button" ><Edit /> Edit <span className="visually-hidden">{set.name}</span></button>
+                <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "edit", set: set }) }}><Edit /> Edit <span className="visually-hidden">{set.name}</span></button>
                 <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "delete", set: set }) }}><Delete /> Delete <span className="visually-hidden">{set.name}</span></button>
             </div>}
         </header>
