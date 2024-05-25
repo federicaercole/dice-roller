@@ -6,7 +6,7 @@ import D10wn from "../assets/svg/d10wn.svg"
 import D12wn from "../assets/svg/d12wn.svg"
 import D20wn from "../assets/svg/d20wn.svg"
 import D100wn from "../assets/svg/d100wn.svg"
-import { DieInt } from "./types"
+import { DieInt, DiceSetInt } from "./types"
 
 export function printDieSVG(dieSize: number): React.ReactNode {
     switch (dieSize) {
@@ -31,7 +31,7 @@ export function printDieSVG(dieSize: number): React.ReactNode {
 
 export function countDice(setDice: DieInt[]) {
     const diceSizeMap = setDice.map(item => item.size);
-    const diceCount = diceSizeMap.reduce((obj: { [key: string]: number }, item) => {
+    const diceCount = diceSizeMap.reduce((obj: { [key: number]: number }, item) => {
         if (!obj[item]) {
             obj[item] = 0;
         }
@@ -39,4 +39,8 @@ export function countDice(setDice: DieInt[]) {
         return obj;
     }, {})
     return diceCount;
+}
+
+export function isSet(set: unknown): set is DiceSetInt {
+    return typeof set !== "undefined";
 }
