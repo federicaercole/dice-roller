@@ -4,9 +4,8 @@ import Expand from "../assets/svg/expand.svg";
 import Delete from "../assets/svg/delete.svg";
 import Edit from "../assets/svg/edit.svg";
 import Load from "../assets/svg/load.svg";
-import { printDieSVG } from "./utils";
-import { DiceSetInt, DieInt, ModalInt } from "./types";
-import { countDice } from "./utils";
+import { DiceSetInt, ModalInt } from "./types";
+import { printDice } from "./utils";
 
 interface Props {
     set: DiceSetInt,
@@ -19,15 +18,6 @@ function DiceSet({ set, setModalContent, setIsModalOpened }: Props) {
     const clickedBtn = useRef<HTMLButtonElement>(null);
     const { isOpened, setIsOpened } = useOpenedStatus(openedMenu, clickedBtn);
 
-    function printDice(setDice: DieInt[]) {
-        const obj = countDice(setDice);
-        const spanElement = [];
-        for (const key in obj) {
-            spanElement.push(<span key={`${obj[key]}d${key}`} aria-hidden="true" aria-label={`${obj[key]}d${key}`}>{obj[key]} x {printDieSVG(Number(key))}</span>);
-        }
-        return spanElement.map(item => item);
-    }
-
     return (<article>
         <header><h3>{set.name}</h3>
             <button type="button" onClick={() => setIsOpened(!isOpened)} ref={clickedBtn}
@@ -38,7 +28,7 @@ function DiceSet({ set, setModalContent, setIsModalOpened }: Props) {
                 <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "delete", set: set }) }}><Delete /> Delete <span className="visually-hidden">{set.name}</span></button>
             </div>}
         </header>
-        <div>
+        <div className="dice-summary">
             {printDice(set.dice)}
         </div>
     </article>)

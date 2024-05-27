@@ -19,11 +19,9 @@ function App() {
   }, [message, setIsOpened])
 
   return (<>
-    {isOpened && <aside ref={openedMessage}>{message}<button type="button" ref={closeBtn} onClick={() => { setIsOpened(false); setMessage("") }}>
+    {isOpened && <aside ref={openedMessage}>{message}<button type="button" className="only-svg-btn" ref={closeBtn} onClick={() => { setIsOpened(false); setMessage("") }}>
       <Close /><span className="visually-hidden">Close</span></button></aside>}
-    <main>
-      <Outlet context={[message, setMessage] satisfies MessageOutletContext} />
-    </main>
+    <Outlet context={[message, setMessage] satisfies MessageOutletContext} />
     <Menu />
   </>)
 }

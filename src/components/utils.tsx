@@ -41,6 +41,15 @@ export function countDice(setDice: DieInt[]) {
     return diceCount;
 }
 
+export function printDice(setDice: DieInt[]) {
+    const obj = countDice(setDice);
+    const spanElement = [];
+    for (const key in obj) {
+        spanElement.push(<span key={`${obj[key]}d${key}`} aria-hidden="true" aria-label={`${obj[key]}d${key}`}>{obj[key]} x {printDieSVG(Number(key))}</span>);
+    }
+    return spanElement.map(item => item);
+}
+
 export function isSet(set: unknown): set is DiceSetInt {
     return typeof set !== "undefined";
 }
