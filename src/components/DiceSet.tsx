@@ -1,4 +1,4 @@
-import useOpenedStatus from "./useOpenedStatus";
+import useOpenStatus from "./useOpenStatus";
 import { useRef } from "react";
 import Expand from "../assets/svg/expand.svg";
 import Delete from "../assets/svg/delete.svg";
@@ -9,23 +9,22 @@ import { printDice } from "./utils";
 
 interface Props {
     set: DiceSetInt,
-    setModalContent: React.Dispatch<React.SetStateAction<ModalInt>>,
-    setIsModalOpened: React.Dispatch<React.SetStateAction<boolean>>,
+    openModal: (modal: ModalInt) => void
 }
 
-function DiceSet({ set, setModalContent, setIsModalOpened }: Props) {
-    const openedMenu = useRef<HTMLDivElement>(null);
+function DiceSet({ set, openModal }: Props) {
+    const OpenMenu = useRef<HTMLDivElement>(null);
     const clickedBtn = useRef<HTMLButtonElement>(null);
-    const { isOpened, setIsOpened } = useOpenedStatus(openedMenu, clickedBtn);
+    const { isOpen, setIsOpen } = useOpenStatus(OpenMenu, clickedBtn);
 
     return (<article>
         <header><h3>{set.name}</h3>
-            <button type="button" onClick={() => setIsOpened(!isOpened)} ref={clickedBtn}
-                className="expand" aria-haspopup="true" aria-expanded={isOpened} aria-controls={set.name.toLowerCase().replace(/\s+/g, "-")} aria-label="Expand for more options"><Expand /></button>
-            {isOpened && <div className="dropdown" id={set.name.toLowerCase().replace(/\s+/g, "-")} ref={openedMenu}>
-                <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "load", set: set }) }} ><Load /> Load <span className="visually-hidden">{set.name}</span></button>
-                <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "edit", set: set }) }}><Edit /> Edit <span className="visually-hidden">{set.name}</span></button>
-                <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "delete", set: set }) }}><Delete /> Delete <span className="visually-hidden">{set.name}</span></button>
+            <button type="button" onClick={() => setIsOpen(!isOpen)} ref={clickedBtn}
+                className="expand" aria-haspopup="true" aria-expanded={isOpen} aria-controls={set.name.toLowerCase().replace(/\s+/g, "-")} aria-label="Expand for more options"><Expand /></button>
+            {isOpen && <div className="dropdown" id={set.name.toLowerCase().replace(/\s+/g, "-")} ref={OpenMenu}>
+                <button type="button" onClick={() => openModal({ modal: "load", set: set })} ><Load /> Load <span className="visually-hidden">{set.name}</span></button>
+                <button type="button" onClick={() => openModal({ modal: "edit", set: set })}><Edit /> Edit <span className="visually-hidden">{set.name}</span></button>
+                <button type="button" onClick={() => openModal({ modal: "delete", set: set })}><Delete /> Delete <span className="visually-hidden">{set.name}</span></button>
             </div>}
         </header>
         <div className="dice-summary">

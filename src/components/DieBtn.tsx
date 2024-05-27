@@ -1,15 +1,16 @@
 import { useDiceStore } from "./DiceStore"
 import { printDieSVG } from "./utils"
 import { v4 as uuidv4 } from 'uuid';
+import { maxNumberOfDice } from "./utils";
+import { ModalInt } from "./types";
 
 interface Props {
     dieSize: number
-    openErrorModal: () => void;
+    openModal: (modal: ModalInt) => void;
 }
 
-export function DieBtn({ dieSize, openErrorModal }: Props) {
+export function DieBtn({ dieSize, openModal }: Props) {
     const { dice } = useDiceStore();
-    const maxNumberOfDice = 99;
 
     const addDie = (size: number) => useDiceStore.setState(state => ({
         dice: [...state.dice, {
@@ -25,7 +26,7 @@ export function DieBtn({ dieSize, openErrorModal }: Props) {
             if (dice.length < maxNumberOfDice) {
                 addDie(dieSize)
             } else {
-                openErrorModal();
+                openModal({ modal: "errorMaxNumberOfDice" });
             }
         }}>{printDieSVG(dieSize)}</button>
     )

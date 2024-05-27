@@ -2,24 +2,24 @@ import { Menu } from './components/Menu';
 import { Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { MessageOutletContext } from './components/types';
-import useOpenedStatus from './components/useOpenedStatus';
+import useOpenStatus from './components/useOpenStatus';
 import { useRef } from 'react';
 import Close from "./assets/svg/close.svg";
 
 function App() {
   const [message, setMessage] = useState<string>("");
-  const openedMessage = useRef<HTMLDivElement>(null);
+  const openMessage = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
-  const { isOpened, setIsOpened } = useOpenedStatus(openedMessage, closeBtn);
+  const { isOpen, setIsOpen } = useOpenStatus(openMessage, closeBtn);
 
   useEffect(() => {
     if (message !== "") {
-      setIsOpened(true);
+      setIsOpen(true);
     }
-  }, [message, setIsOpened])
+  }, [message, setIsOpen])
 
   return (<>
-    {isOpened && <aside ref={openedMessage}>{message}<button type="button" className="only-svg-btn" ref={closeBtn} onClick={() => { setIsOpened(false); setMessage("") }}>
+    {isOpen && <aside ref={openMessage}>{message}<button type="button" className="only-svg-btn" ref={closeBtn} onClick={() => { setIsOpen(false); setMessage("") }}>
       <Close /><span className="visually-hidden">Close</span></button></aside>}
     <Outlet context={[message, setMessage] satisfies MessageOutletContext} />
     <Menu />

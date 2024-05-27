@@ -3,11 +3,11 @@ import Close from "../assets/svg/close.svg";
 import { ModalInt } from "./types";
 import { ModalContent } from "./ModalContent";
 interface Props {
-    setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     modalContent: ModalInt;
 }
 
-function Modal({ setIsOpened, modalContent }: Props) {
+function Modal({ setIsOpen, modalContent }: Props) {
     const focusableElements = useRef<HTMLElement[]>([]);
 
     const setFocusableElements = (element: HTMLButtonElement) => {
@@ -38,7 +38,7 @@ function Modal({ setIsOpened, modalContent }: Props) {
 
     function handleKeyboardButtons(e: React.KeyboardEvent<HTMLInputElement>) {
         switch (true) {
-            case e.key === "Escape": return setIsOpened(false);
+            case e.key === "Escape": return setIsOpen(false);
             case e.key === "Tab": return focusTrap(e);
             default: return;
         }
@@ -63,9 +63,9 @@ function Modal({ setIsOpened, modalContent }: Props) {
 
     return (<div role="dialog" className="modal" aria-labelledby="dialog-title" aria-modal="true" onKeyDown={handleKeyboardButtons}>
         <div>
-            <button type="button" className="only-svg-btn" ref={setFocusableElements} onClick={() => setIsOpened(false)} autoFocus><Close /><span className="visually-hidden">Close</span></button>
+            <button type="button" className="only-svg-btn" ref={setFocusableElements} onClick={() => setIsOpen(false)} autoFocus><Close /><span className="visually-hidden">Close</span></button>
             <h2 id="dialog-title">{printModalTitle()}</h2>
-            <ModalContent content={modalContent} setIsOpened={setIsOpened} setRef={setFocusableElements} />
+            <ModalContent content={modalContent} setIsOpen={setIsOpen} setRef={setFocusableElements} />
         </div>
     </div>)
 }

@@ -10,7 +10,7 @@ import Lock from "../assets/svg/lock.svg";
 import Unlock from "../assets/svg/unlock.svg";
 import Expand from "../assets/svg/expand.svg";
 import { DieInt } from "./types";
-import useOpenedStatus from "./useOpenedStatus";
+import useOpenStatus from "./useOpenStatus";
 import { useDiceStore } from "./DiceStore";
 import { useRef } from "react";
 interface Props {
@@ -18,10 +18,10 @@ interface Props {
 }
 
 export function Die({ die }: Props) {
-    const openedMenu = useRef<HTMLDivElement>(null);
+    const openMenu = useRef<HTMLDivElement>(null);
     const clickedBtn = useRef<HTMLButtonElement>(null);
 
-    const { isOpened, setIsOpened } = useOpenedStatus(openedMenu, clickedBtn);
+    const { isOpen, setIsOpen } = useOpenStatus(openMenu, clickedBtn);
 
     const deleteDie = (id: string) => useDiceStore.setState(state => ({ dice: state.dice.filter(item => id !== item.id) }));
     const lockDie = (id: string) => useDiceStore.setState(state => ({
@@ -57,10 +57,10 @@ export function Die({ die }: Props) {
         <li>
             <span>{die.rolledNumber ? die.rolledNumber : "?"} {printDieSVG(die.size)}</span>
             {die.isLocked && <><Lock /><span className="visually-hidden">Locked die</span></>}
-            <button type="button" onClick={() => setIsOpened(!isOpened)} ref={clickedBtn}
-                className="expand" aria-haspopup="true" aria-expanded={isOpened} aria-controls={`die-${die.id}-ctrl`} aria-label="Expand for more options"><Expand /></button>
+            <button type="button" onClick={() => setIsOpen(!isOpen)} ref={clickedBtn}
+                className="expand" aria-haspopup="true" aria-expanded={isOpen} aria-controls={`die-${die.id}-ctrl`} aria-label="Expand for more options"><Expand /></button>
         </li>
-        {isOpened && <div className="dropdown" id={`die-${die.id}-ctrl`} ref={openedMenu}>
+        {isOpen && <div className="dropdown" id={`die-${die.id}-ctrl`} ref={openMenu}>
             <button type="button" onClick={() => lockDie(die.id)}>
                 {die.isLocked ? <Unlock /> : <Lock />}
                 {die.isLocked ? "Unlock" : "Lock"} <span className="visually-hidden">this d{die.size}</span></button>

@@ -8,6 +8,9 @@ import D20wn from "../assets/svg/d20wn.svg"
 import D100wn from "../assets/svg/d100wn.svg"
 import { DieInt, DiceSetInt } from "./types"
 
+export const maxNumberOfSets = 30;
+export const maxNumberOfDice = 99;
+
 export function printDieSVG(dieSize: number): React.ReactNode {
     switch (dieSize) {
         case 2:

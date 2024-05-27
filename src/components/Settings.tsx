@@ -5,15 +5,19 @@ import { ModalInt } from "./types";
 import DiceSet from "./DiceSet";
 import Modal from "./Modal";
 import { useState } from "react";
+import { maxNumberOfSets } from "./utils";
 
 function Settings() {
-    const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [modalContent, setModalContent] = useState<ModalInt>({ modal: "" });
 
     const { settings } = useDiceStore();
     const toggleVisibility = (value: string) => useDiceStore.setState(produce(state => { state.settings.visibility[value] = !state.settings.visibility[value] }));
 
-    const maxNumberOfSets = 30;
+    function openModal(modal: ModalInt) {
+        setIsModalOpen(true);
+        setModalContent(modal);
+    }
 
     return (<main>
         <h1>Settings</h1>
@@ -28,18 +32,17 @@ function Settings() {
                 <h2>Dice Sets</h2>
                 <button type="button" className="only-svg-btn"
                     onClick={() => {
-                        setIsModalOpened(true);
                         if (settings.sets.length < maxNumberOfSets) {
-                            setModalContent({ modal: "add" })
+                            openModal({ modal: "add" })
                         } else {
-                            setModalContent({ modal: "errorMaxNumberOfSets" })
+                            openModal({ modal: "errorMaxNumberOfSets" })
                         }
                     }}>
                     <Add /><span className="visually-hidden">Add a new set</span></button>
             </header>
-            {settings.sets.map((set) => <DiceSet key={set.name} set={set} setIsModalOpened={setIsModalOpened} setModalContent={setModalContent} />)}
+            {settings.sets.map((set) => <DiceSet key={set.name} set={set} openModal={openModal} />)}
         </section >
-        {isModalOpened && <Modal setIsOpened={setIsModalOpened} modalContent={modalContent} />}
+        {isModalOpen && <Modal setIsOpen={setIsModalOpen} modalContent={modalContent} />}
     </main>)
 }
 
