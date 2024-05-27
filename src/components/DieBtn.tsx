@@ -4,9 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
     dieSize: number
+    openErrorModal: () => void;
 }
 
-export function DieBtn({ dieSize }: Props) {
+export function DieBtn({ dieSize, openErrorModal }: Props) {
+    const { dice } = useDiceStore();
+    const maxNumberOfDice = 99;
 
     const addDie = (size: number) => useDiceStore.setState(state => ({
         dice: [...state.dice, {
@@ -18,6 +21,12 @@ export function DieBtn({ dieSize }: Props) {
     }))
 
     return (
-        <button type="button" onClick={() => addDie(dieSize)}>{printDieSVG(dieSize)}</button>
+        <button type="button" onClick={() => {
+            if (dice.length < maxNumberOfDice) {
+                addDie(dieSize)
+            } else {
+                openErrorModal();
+            }
+        }}>{printDieSVG(dieSize)}</button>
     )
 }

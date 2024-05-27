@@ -54,12 +54,16 @@ function Modal({ setIsOpened, modalContent }: Props) {
                 return `Do you want to delete ${modalContent.set?.name}?`;
             case "edit":
                 return `Edit ${modalContent.set?.name}`;
+            case "errorMaxNumberOfSets":
+                return `Max number of sets reached`;
+            case "errorMaxNumberOfDice":
+                return `Max number of dice reached`;
         }
     }
 
     return (<div role="dialog" className="modal" aria-labelledby="dialog-title" aria-modal="true" onKeyDown={handleKeyboardButtons}>
         <div>
-            <button type="button" className="close" ref={setFocusableElements} onClick={() => setIsOpened(false)} autoFocus><Close /><span className="visually-hidden">Close</span></button>
+            <button type="button" className="only-svg-btn" ref={setFocusableElements} onClick={() => setIsOpened(false)} autoFocus><Close /><span className="visually-hidden">Close</span></button>
             <h2 id="dialog-title">{printModalTitle()}</h2>
             <ModalContent content={modalContent} setIsOpened={setIsOpened} setRef={setFocusableElements} />
         </div>

@@ -14,6 +14,7 @@ interface ModalContentProps {
     setIsOpened: React.Dispatch<React.SetStateAction<boolean>>,
     content?: ModalInt,
     setRef: (element: HTMLButtonElement) => void,
+    textContent?: string;
 }
 
 export function ModalContent({ setIsOpened, content, setRef }: ModalContentProps) {
@@ -28,6 +29,12 @@ export function ModalContent({ setIsOpened, content, setRef }: ModalContentProps
             return <DeleteModal setIsOpened={setIsOpened} set={content.set} setRef={setRef} setMessage={setMessage} />;
         case "edit":
             return <FormModal setIsOpened={setIsOpened} set={content.set} setRef={setRef} setMessage={setMessage} message={"The set has been edited!"} />;
+        case "errorMaxNumberOfDice":
+            return <WarningModal setIsOpened={setIsOpened} setRef={setRef} textContent="
+            You can have a maximum of 99 dice. To add a new die you must delete the existing ones." />;
+        case "errorMaxNumberOfSets":
+            return <WarningModal setIsOpened={setIsOpened} setRef={setRef} textContent="
+            You can have a maximum of 30 sets saved. To add a new set you must delete the existing ones." />;
     }
 }
 interface ModalProps extends ModalContentProps {
@@ -99,4 +106,12 @@ function FormModal({ setIsOpened, set, setRef, setMessage, message }: ModalProps
         <input type="text" id="dice" {...diceSet} aria-invalid={errors?.dice ? true : false} aria-describedby="error-dice" />
         <button type="submit" ref={setRef} >Save set</button>
     </form>)
+}
+
+function WarningModal({ setIsOpened, setRef, textContent }: ModalContentProps) {
+
+    return (<>
+        <p>{textContent}</p>
+        <button type="button" ref={setRef} onClick={() => setIsOpened(false)} >Ok</button>
+    </>)
 }

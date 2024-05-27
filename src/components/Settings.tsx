@@ -13,7 +13,9 @@ function Settings() {
     const { settings } = useDiceStore();
     const toggleVisibility = (value: string) => useDiceStore.setState(produce(state => { state.settings.visibility[value] = !state.settings.visibility[value] }));
 
-    return (<>
+    const maxNumberOfSets = 30;
+
+    return (<main>
         <h1>Settings</h1>
         <button type="button" role="switch" aria-checked={settings.visibility.sum} onClick={() => toggleVisibility("sum")}>
             <span className="switch"></span>
@@ -24,12 +26,21 @@ function Settings() {
         <section>
             <header>
                 <h2>Dice Sets</h2>
-                <button type="button" onClick={() => { setIsModalOpened(true); setModalContent({ modal: "add" }) }}><Add /><span className="visually-hidden">Add a new set</span></button>
+                <button type="button" className="only-svg-btn"
+                    onClick={() => {
+                        setIsModalOpened(true);
+                        if (settings.sets.length < maxNumberOfSets) {
+                            setModalContent({ modal: "add" })
+                        } else {
+                            setModalContent({ modal: "errorMaxNumberOfSets" })
+                        }
+                    }}>
+                    <Add /><span className="visually-hidden">Add a new set</span></button>
             </header>
             {settings.sets.map((set) => <DiceSet key={set.name} set={set} setIsModalOpened={setIsModalOpened} setModalContent={setModalContent} />)}
         </section >
         {isModalOpened && <Modal setIsOpened={setIsModalOpened} modalContent={modalContent} />}
-    </>)
+    </main>)
 }
 
 export default Settings
