@@ -13,6 +13,7 @@ interface Settings {
         [key: string]: boolean;
     },
     sets: DiceSetInt[]
+    mode: "buttons" | "input";
 }
 export interface DiceStore {
     dice: DieInt[],

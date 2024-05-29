@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import { MessageOutletContext } from "./types";
 import { useChangeDiceSet } from "./useChangeDiceSet";
-import { useValidateForm } from "./useValidateForm";
-import ErrorMessage from "./ErrorMessage";
 import { useState } from "react";
 import { isSet, maxNumberOfDice, maxNumberOfSets } from "./utils";
+import { Form, Field } from "./Form";
+import { useValidateForm } from "./useValidateForm";
 interface ModalContentProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
     content?: ModalInt,
@@ -37,7 +37,7 @@ export function ModalContent({ setIsOpen, content, setRef }: ModalContentProps) 
             You can have a maximum of ${maxNumberOfSets} sets saved. To add a new set you must delete the existing ones.`} />;
     }
 }
-interface ModalProps extends ModalContentProps {
+export interface ModalProps extends ModalContentProps {
     setMessage: React.Dispatch<React.SetStateAction<string>>
     set?: DiceSetInt;
     message?: string;
@@ -83,12 +83,12 @@ function DeleteModal({ setIsOpen, set, setRef, setMessage }: ModalProps) {
 
 function FormModal({ setIsOpen, set, setRef, setMessage, message }: ModalProps) {
     const { setName, diceSet, addDiceToSet } = useChangeDiceSet(set);
-    const validationErrors = useValidateForm(setName.value, diceSet.value, set);
+    const validationErrors = useValidateForm(diceSet.value, setName.value, set);
     const [errors, setErrors] = useState<{ [key: string]: string }>();
 
     function handleFormSubmit(e: React.FormEvent) {
+        e.preventDefault();
         if (Object.keys(validationErrors).length > 0) {
-            e.preventDefault();
             setErrors(validationErrors);
         } else {
             addDiceToSet();
@@ -97,15 +97,11 @@ function FormModal({ setIsOpen, set, setRef, setMessage, message }: ModalProps) 
         }
     }
 
-    return (<form noValidate method="post" onSubmit={handleFormSubmit}>
-        <label htmlFor="name">Set name</label>
-        <ErrorMessage id="error-name" errorMessage={errors?.name ?? ""} />
-        <input type="text" id="name" {...setName} aria-invalid={errors?.name ? true : false} aria-describedby="error-name" />
-        <label htmlFor="dice">Dice (example: 4d6+1d8)</label>
-        <ErrorMessage id="error-dice" errorMessage={errors?.dice ?? ""} />
-        <input type="text" id="dice" {...diceSet} aria-invalid={errors?.dice ? true : false} aria-describedby="error-dice" />
-        <button type="submit" ref={setRef} >Save set</button>
-    </form>)
+    return (<Form callback={handleFormSubmit} >
+        <Field label="Set name" name="name" handle={setName} error={errors?.name ?? ""} />
+        <Field label="Dice (example: 4d6+1d8)" name="dice" handle={diceSet} error={errors?.dice ?? ""} />
+        <button type="submit" ref={setRef}>Save set</button>
+    </Form>)
 }
 
 function WarningModal({ setIsOpen, setRef, textContent }: ModalContentProps) {

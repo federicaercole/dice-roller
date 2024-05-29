@@ -10,6 +10,7 @@ const initialState: DiceStore = {
             rolls: true,
         },
         sets: [],
+        mode: "buttons",
     }
 }
 
