@@ -24,20 +24,25 @@ function DiceInput({ openModal }: { openModal: (modal: ModalInt) => void }) {
             setErrors(validationErrors);
         } else {
             addDiceInHome();
-            setMessage("Dice have been added!")
+            setMessage("Dice have been added!");
+            diceSet.onChange("");
+            setErrors({});
         }
     }
 
-    const toggleModality = () => useDiceStore.setState(produce(state => {
-        if (state.settings.mode === "buttons") {
-            state.settings.mode = "input";
-        } else {
-            state.settings.mode = "buttons";
-        }
-    }))
+    const toggleMode = () => {
+        useDiceStore.setState(produce(state => {
+            if (state.settings.mode === "buttons") {
+                state.settings.mode = "input";
+            } else {
+                state.settings.mode = "buttons";
+            }
+        }))
+        setErrors({});
+    }
 
     return (<div className="dice-input-container">
-        <button type="button" onClick={toggleModality}><Switch />Switch to {settings.mode === "buttons" ? "formula" : "buttons"} mode</button>
+        <button type="button" onClick={toggleMode}><Switch />Switch to {settings.mode === "buttons" ? "formula" : "buttons"} mode</button>
         {settings.mode === "buttons" &&
             <div className="dice">
                 {dieSize.map(die => <DieBtn dieSize={die} key={`d${die}`} openModal={openModal} />)}

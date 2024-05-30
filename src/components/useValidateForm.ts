@@ -17,7 +17,7 @@ export function useValidateForm(diceInput: string, nameInput?: string, set?: Dic
     const errors: { [key: string]: string } = {};
 
     if (nameInput || nameInput === "") {
-        if (!nameInput?.trim()) {
+        if (!nameInput.trim()) {
             errors.name = "Name of the set is required";
         } else if (findSet(nameInput.trim())) {
             errors.name = "A set with this name already exists. Please write another name";

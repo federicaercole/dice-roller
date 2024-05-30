@@ -17,7 +17,10 @@ interface FieldProps {
     name: string;
     handle: {
         value: string;
-        onChange: (e: React.FormEvent<Element>) => void;
+        onChange: {
+            (str: string): void;
+            (e: React.FormEvent<Element>): void;
+        }
     }
     error: string;
 }
