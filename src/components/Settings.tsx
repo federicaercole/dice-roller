@@ -1,23 +1,18 @@
 import { useDiceStore } from "./DiceStore"
 import { produce } from "immer";
 import Add from "../assets/svg/add.svg";
-import { ModalInt } from "./types";
 import DiceSet from "./DiceSet";
 import Modal from "./Modal";
-import { useState } from "react";
+import { useRef } from "react";
 import { maxNumberOfSets } from "./utils";
+import { useModal } from "./useModal";
 
 function Settings() {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [modalContent, setModalContent] = useState<ModalInt>({ modal: "" });
+    const modal = useRef<HTMLDivElement>(null);
+    const { isOpen, setIsOpen, modalContent, openModal } = useModal(modal);
 
     const { settings } = useDiceStore();
     const toggleVisibility = (value: string) => useDiceStore.setState(produce(state => { state.settings.visibility[value] = !state.settings.visibility[value] }));
-
-    function openModal(modal: ModalInt) {
-        setIsModalOpen(true);
-        setModalContent(modal);
-    }
 
     return (<main>
         <h1>Settings</h1>
@@ -42,7 +37,7 @@ function Settings() {
             </header>
             {settings.sets.map((set) => <DiceSet key={set.name} set={set} openModal={openModal} />)}
         </section >
-        {isModalOpen && <Modal setIsOpen={setIsModalOpen} modalContent={modalContent} />}
+        {isOpen && <Modal innerRef={modal} setIsOpen={setIsOpen} modalContent={modalContent} />}
     </main>)
 }
 

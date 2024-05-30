@@ -5,9 +5,10 @@ import { ModalContent } from "./ModalContent";
 interface Props {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     modalContent: ModalInt;
+    innerRef: React.RefObject<HTMLDivElement>;
 }
 
-function Modal({ setIsOpen, modalContent }: Props) {
+function Modal({ setIsOpen, modalContent, innerRef }: Props) {
     const focusableElements = useRef<HTMLElement[]>([]);
 
     const setFocusableElements = (element: HTMLButtonElement) => {
@@ -37,11 +38,7 @@ function Modal({ setIsOpen, modalContent }: Props) {
     };
 
     function handleKeyboardButtons(e: React.KeyboardEvent<HTMLInputElement>) {
-        switch (true) {
-            case e.key === "Escape": return setIsOpen(false);
-            case e.key === "Tab": return focusTrap(e);
-            default: return;
-        }
+        if (e.key === "Tab") focusTrap(e);
     }
 
     function printModalTitle() {
@@ -62,7 +59,7 @@ function Modal({ setIsOpen, modalContent }: Props) {
     }
 
     return (<div role="dialog" className="modal" aria-labelledby="dialog-title" aria-modal="true" onKeyDown={handleKeyboardButtons}>
-        <div>
+        <div ref={innerRef}>
             <button type="button" className="only-svg-btn" ref={setFocusableElements} onClick={() => setIsOpen(false)} autoFocus><Close /><span className="visually-hidden">Close</span></button>
             <h2 id="dialog-title">{printModalTitle()}</h2>
             <ModalContent content={modalContent} setIsOpen={setIsOpen} setRef={setFocusableElements} />

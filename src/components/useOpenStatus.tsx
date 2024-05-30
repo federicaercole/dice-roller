@@ -1,28 +1,37 @@
 import { useState, useEffect } from "react";
 
-function useOpenStatus(menu: React.RefObject<HTMLDivElement>, btn: React.RefObject<HTMLButtonElement>) {
+function useOpenStatus(element: React.RefObject<HTMLDivElement>, btn?: React.RefObject<HTMLButtonElement>, setMessage?: React.Dispatch<React.SetStateAction<string>>) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        function closeOpenMenuWhenClickingOutside(event: MouseEvent | KeyboardEvent) {
-            if (!menu.current?.contains(event.target as Node) && event.target !== btn.current) {
-                setIsOpen(false);
+        function close() {
+            setIsOpen(false);
+            if (setMessage) {
+                setMessage("");
             }
         }
 
-        function closeOpenMenuWhenUsingKeyboard(event: KeyboardEvent) {
+        function closeOpenElementWhenClickingOutside(event: MouseEvent | KeyboardEvent) {
+            if (!element.current?.contains(event.target as Node) && event.target !== btn?.current) {
+                close();
+            }
+        }
+
+        function closeOpenElementWhenUsingKeyboard(event: KeyboardEvent) {
             if (event.key === "Enter") {
-                closeOpenMenuWhenClickingOutside(event);
+                closeOpenElementWhenClickingOutside(event);
+            } else if (event.key === "Escape") {
+                close();
             }
         }
 
-        document.addEventListener("mousedown", closeOpenMenuWhenClickingOutside);
-        document.addEventListener("keydown", closeOpenMenuWhenUsingKeyboard);
+        document.addEventListener("mousedown", closeOpenElementWhenClickingOutside);
+        document.addEventListener("keydown", closeOpenElementWhenUsingKeyboard);
         return () => {
-            document.removeEventListener("mousedown", closeOpenMenuWhenClickingOutside);
-            document.removeEventListener("keydown", closeOpenMenuWhenUsingKeyboard);
+            document.removeEventListener("mousedown", closeOpenElementWhenClickingOutside);
+            document.removeEventListener("keydown", closeOpenElementWhenUsingKeyboard);
         }
-    }, [menu, btn])
+    }, [element, btn, setMessage])
 
     return { isOpen, setIsOpen };
 }

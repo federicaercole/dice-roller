@@ -1,12 +1,13 @@
 import { Die } from '../components/Die';
 import Close from "../assets/svg/close.svg";
 import RollDie from "../assets/svg/rollDie.svg";
-import { DiceStore, DieInt, ModalInt } from "../components/types";
+import { DiceStore, DieInt } from "../components/types";
 import { useDiceStore } from './DiceStore';
-import { useState } from 'react';
+import { useRef } from 'react';
 import Modal from './Modal';
 import DiceInput from './DiceInput';
 import Add from "../assets/svg/add.svg";
+import { useModal } from './useModal';
 
 import { Random, MersenneTwister19937 } from "random-js";
 import { maxNumberOfSets, printDice } from './utils';
@@ -14,16 +15,11 @@ import { maxNumberOfSets, printDice } from './utils';
 const random = new Random(MersenneTwister19937.autoSeed());
 
 function Home() {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [modalContent, setModalContent] = useState<ModalInt>({ modal: "" });
+    const modal = useRef<HTMLDivElement>(null);
+    const { isOpen, setIsOpen, modalContent, openModal } = useModal(modal);
 
     const { dice, settings } = useDiceStore();
     const sum = dice.reduce(sumRolls, 0);
-
-    function openModal(modal: ModalInt) {
-        setIsModalOpen(true);
-        setModalContent(modal);
-    }
 
     function sumRolls(prev: number, curr: DieInt): number {
         if (typeof curr.rolledNumber === "number") {
@@ -68,7 +64,7 @@ function Home() {
             {dice.length > 0 && <button type="button" className="action" onClick={rollDice}><RollDie /> Roll</button>}
         </div>
         <DiceInput openModal={openModal} />
-        {isModalOpen && <Modal setIsOpen={setIsModalOpen} modalContent={modalContent} />}
+        {isOpen && <Modal innerRef={modal} setIsOpen={setIsOpen} modalContent={modalContent} />}
     </main>)
 }
 

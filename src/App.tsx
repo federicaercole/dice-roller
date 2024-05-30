@@ -10,7 +10,7 @@ function App() {
   const [message, setMessage] = useState<string>("");
   const openMessage = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
-  const { isOpen, setIsOpen } = useOpenStatus(openMessage, closeBtn);
+  const { isOpen, setIsOpen } = useOpenStatus(openMessage, closeBtn, setMessage);
 
   useEffect(() => {
     if (message !== "") {

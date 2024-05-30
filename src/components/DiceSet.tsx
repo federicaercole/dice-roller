@@ -13,15 +13,15 @@ interface Props {
 }
 
 function DiceSet({ set, openModal }: Props) {
-    const OpenMenu = useRef<HTMLDivElement>(null);
+    const openMenu = useRef<HTMLDivElement>(null);
     const clickedBtn = useRef<HTMLButtonElement>(null);
-    const { isOpen, setIsOpen } = useOpenStatus(OpenMenu, clickedBtn);
+    const { isOpen, setIsOpen } = useOpenStatus(openMenu, clickedBtn);
 
     return (<article>
         <header><h3>{set.name}</h3>
             <button type="button" onClick={() => setIsOpen(!isOpen)} ref={clickedBtn}
                 className="expand" aria-haspopup="true" aria-expanded={isOpen} aria-controls={set.name.toLowerCase().replace(/\s+/g, "-")} aria-label="Expand for more options"><Expand /></button>
-            {isOpen && <div className="dropdown" id={set.name.toLowerCase().replace(/\s+/g, "-")} ref={OpenMenu}>
+            {isOpen && <div className="dropdown" id={set.name.toLowerCase().replace(/\s+/g, "-")} ref={openMenu}>
                 <button type="button" onClick={() => openModal({ modal: "load", set: set })} ><Load /> Load <span className="visually-hidden">{set.name}</span></button>
                 <button type="button" onClick={() => openModal({ modal: "edit", set: set })}><Edit /> Edit <span className="visually-hidden">{set.name}</span></button>
                 <button type="button" onClick={() => openModal({ modal: "delete", set: set })}><Delete /> Delete <span className="visually-hidden">{set.name}</span></button>
