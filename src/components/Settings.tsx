@@ -14,7 +14,7 @@ function Settings() {
     const { settings } = useDiceStore();
     const toggleVisibility = (value: string) => useDiceStore.setState(produce(state => { state.settings.visibility[value] = !state.settings.visibility[value] }));
 
-    return (<main>
+    return (<main className="flex">
         <h1>Settings</h1>
         <button type="button" role="switch" aria-checked={settings.visibility.sum} onClick={() => toggleVisibility("sum")}>
             <span className="switch"></span>
@@ -22,6 +22,7 @@ function Settings() {
         <button type="button" role="switch" aria-checked={settings.visibility.rolls} onClick={() => toggleVisibility("rolls")}>
             <span className="switch"></span>
             Show rolls</button>
+        <button type="button" onClick={() => openModal({ modal: "reset" })}>Reset the app</button>
         <section>
             <header>
                 <h2>Dice Sets</h2>

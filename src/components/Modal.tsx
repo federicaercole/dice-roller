@@ -51,6 +51,8 @@ function Modal({ setIsOpen, modalContent, innerRef }: Props) {
                 return `Do you want to delete ${modalContent.set?.name}?`;
             case "edit":
                 return `Edit ${modalContent.set?.name}`;
+            case "reset":
+                return `Do you want to reset the app?`;
             case "errorMaxNumberOfSets":
                 return `Max number of sets reached`;
             case "errorMaxNumberOfDice":

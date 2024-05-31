@@ -10,6 +10,7 @@ import { useState } from "react";
 import { isSet, maxNumberOfDice, maxNumberOfSets } from "./utils";
 import { Form, Field } from "./Form";
 import { useValidateForm } from "./useValidateForm";
+import { initialState } from "./DiceStore";
 interface ModalContentProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
     content?: ModalInt,
@@ -29,6 +30,8 @@ export function ModalContent({ setIsOpen, content, setRef }: ModalContentProps) 
             return <DeleteModal setIsOpen={setIsOpen} set={content.set} setRef={setRef} setMessage={setMessage} />;
         case "edit":
             return <FormModal setIsOpen={setIsOpen} set={content.set} setRef={setRef} setMessage={setMessage} message={"The set has been edited!"} />;
+        case "reset":
+            return <ResetModal setIsOpen={setIsOpen} setRef={setRef} setMessage={setMessage} />;
         case "errorMaxNumberOfDice":
             return <WarningModal setIsOpen={setIsOpen} setRef={setRef} textContent={`
             You can have a maximum of ${maxNumberOfDice} dice. To add a new die you must delete the existing ones.`} />;
@@ -58,6 +61,22 @@ function LoadModal({ setIsOpen, set, setRef, setMessage }: ModalProps) {
                     navigate("/");
                     setMessage("The set has been loaded!");
                 }
+            }} >Yes</button>
+        </div>
+    </>)
+}
+
+function ResetModal({ setIsOpen, setRef, setMessage }: ModalProps) {
+    const resetApp = () => useDiceStore.setState(initialState);
+
+    return (<>
+        <p>All the dice sets will be deleted. You cannot retrieve the saved sets if you reset the app!</p>
+        <div>
+            <button type="button" ref={setRef} onClick={() => setIsOpen(false)} >No</button>
+            <button type="button" ref={setRef} onClick={() => {
+                resetApp();
+                setIsOpen(false);
+                setMessage("The app has been reset to the default state");
             }} >Yes</button>
         </div>
     </>)

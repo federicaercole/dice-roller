@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { DiceStore } from "../components/types";
 import { persist } from 'zustand/middleware';
 
-const initialState: DiceStore = {
+export const initialState: DiceStore = {
     dice: [],
     settings: {
         visibility: {
