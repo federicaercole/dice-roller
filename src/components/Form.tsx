@@ -30,6 +30,6 @@ export function Field({ label, name, handle, error }: FieldProps) {
     return (<>
         <label htmlFor={name}>{label}</label>
         <ErrorMessage id={`error-${name}`} errorMessage={error} />
-        <input type="text" id={name} {...handle} aria-invalid={error ? true : false} aria-describedby={`error-${name}`} />
+        <input type="text" id={name} {...handle} aria-invalid={error ? true : false} aria-describedby={`error-${name}`} aria-required="true" />
     </>)
 }

@@ -28,6 +28,6 @@ export function DieBtn({ dieSize, openModal }: Props) {
             } else {
                 openModal({ modal: "errorMaxNumberOfDice" });
             }
-        }}>{printDieSVG(dieSize)}</button>
+        }}>{printDieSVG(dieSize)}<span className="visually-hidden">Add a d{dieSize}</span></button>
     )
 }

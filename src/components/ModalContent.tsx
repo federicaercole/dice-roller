@@ -119,6 +119,7 @@ function FormModal({ setIsOpen, set, setRef, setMessage, message }: ModalProps) 
     return (<Form callback={handleFormSubmit} >
         <Field label="Set name" name="name" handle={setName} error={errors?.name ?? ""} />
         <Field label="Dice (example: 4d6+1d8)" name="dice" handle={diceSet} error={errors?.dice ?? ""} />
+        {errors && <p className="visually-hidden" aria-live="assertive">Failed to save because there are invalid fields</p>}
         <button type="submit" ref={setRef}>Save set</button>
     </Form>)
 }

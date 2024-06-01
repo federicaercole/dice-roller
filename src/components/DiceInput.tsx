@@ -50,6 +50,7 @@ function DiceInput({ openModal }: { openModal: (modal: ModalInt) => void }) {
         {settings.mode === "input" &&
             <Form callback={handleFormSubmit}>
                 <Field label="Dice (example: 4d6+1d8)" name="dice" handle={diceSet} error={errors?.dice ?? ""} />
+                {errors && <p className="visually-hidden" aria-live="assertive">Failed to save because the field is invalid</p>}
                 <button type="submit">Add dice</button>
             </Form>}
     </div>)

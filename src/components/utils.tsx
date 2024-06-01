@@ -48,7 +48,9 @@ export function printDice(setDice: DieInt[]) {
     const obj = countDice(setDice);
     const spanElement = [];
     for (const key in obj) {
-        spanElement.push(<span key={`${obj[key]}d${key}`} aria-hidden="true" aria-label={`${obj[key]}d${key}`}>{obj[key]} x {printDieSVG(Number(key))}</span>);
+        spanElement.push(<span key={`${obj[key]}d${key}`} ><span aria-hidden="true">{obj[key]} x {printDieSVG(Number(key))}</span>
+            <span className="visually-hidden">{`${obj[key]}d${key}`}</span>
+        </span>);
     }
     return spanElement.map(item => item);
 }

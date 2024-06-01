@@ -55,10 +55,11 @@ export function Die({ die }: Props) {
 
     return (<>
         <li>
-            <span>{die.rolledNumber ? die.rolledNumber : "?"} {printDieSVG(die.size)}</span>
-            {die.isLocked && <><Lock /><span className="visually-hidden">Locked die</span></>}
+            <span aria-hidden="true">{die.rolledNumber ? die.rolledNumber : "?"} {printDieSVG(die.size)}</span>
+            <span className="visually-hidden">{die.rolledNumber ? `Rolled a ${die.rolledNumber} on a d${die.size}` : `d${die.size} unrolled`} </span>
+            {die.isLocked && <><Lock /><span className="visually-hidden">This d{die.size} is locked</span></>}
             <button type="button" onClick={() => setIsOpen(!isOpen)} ref={clickedBtn}
-                className="expand" aria-haspopup="true" aria-expanded={isOpen} aria-controls={`die-${die.id}-ctrl`} aria-label="Expand for more options"><Expand /></button>
+                className="expand" aria-haspopup="true" aria-expanded={isOpen} aria-controls={`die-${die.id}-ctrl`} aria-label={`Expand for more options for this d${die.size}`}><Expand /></button>
         </li>
         {isOpen && <div className="dropdown" id={`die-${die.id}-ctrl`} ref={openMenu}>
             <button type="button" onClick={() => lockDie(die.id)}>
