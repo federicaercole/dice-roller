@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Outfit:wght@100..900&display=swap');
+@font-face {
+  font-family: "Lexend Deca";
+  font-style: normal;
+  src: url("../src/assets/fonts/LexendDeca.ttf") format("truetype");
+  font-display: swap;
+}
 
 * {
   box-sizing: border-box;
@@ -14,8 +19,14 @@ button {
   padding: 0.5rem;
 }
 
+.flex ul,
+nav ul {
+  list-style: none;
+}
+
 :root {
   --primary-color: #00D6A7;
+  --primary-color-light: #68fede;
   --bg-color-900: #143141;
   --bg-color-800: #1D465C;
   --fs--1: clamp(0.8333rem, 0.7955rem + 0.1894vi, 0.9375rem);
@@ -24,6 +35,15 @@ button {
   --fs-2: clamp(1.62rem, 1.3003rem + 1.5986vi, 2.4992rem);
   --fs-3: clamp(1.944rem, 1.3658rem + 2.8908vi, 3.5339rem);
   --fs-4: clamp(2.3328rem, 1.364rem + 4.844vi, 4.997rem);
+  --block-xs: min(0.25rem, 1vh);
+  --block-s: min(1rem, 4vh);
+  --block-m: min(2rem, 8vh);
+  --padding-xs: clamp(0.5rem, 1.5%, 1.5rem);
+  --padding-s: clamp(1rem, 3%, 1.5rem);
+  --padding-m: clamp(1.5rem, 6%, 3rem);
+  --gap-xs: clamp(0.5rem, 1.5vmax, 1.5rem);
+  --gap-s: clamp(1rem, 3vmax, 1.5rem);
+  --gap-m: clamp(1.5rem, 6vmax, 3rem);
 }
 
 main>*+*:not(.modal, .dice-summary),
@@ -31,14 +51,15 @@ article>*+*,
 #root>*:not(aside)+*,
 .modal>div>*+*,
 .modal form>*+* {
-  margin-block-start: 2rem;
+  margin-block-start: var(--block-m);
 }
 
 section>*+*,
 li+li,
 .dropdown+li,
-.modal label+input {
-  margin-block-start: 1rem;
+.modal label+input,
+.dice-input-container form>* {
+  margin-block-start: var(--block-s);
 }
 
 .visually-hidden {
@@ -53,9 +74,7 @@ li+li,
 body {
   font-family: "Lexend Deca", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: var(--fs-1);
+  font-size: var(--fs-0);
   color: var(--primary-color);
   background-color: var(--bg-color-900);
 }
@@ -64,7 +83,7 @@ body {
   display: grid;
   grid-template-rows: 1fr auto;
   max-width: 1200px;
-  padding: 1rem;
+  padding: var(--padding-s);
   min-height: 100vh;
   min-height: 100dvh;
   margin-inline: auto;
@@ -77,9 +96,8 @@ footer {
 nav ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: var(--gap-m);
   height: auto;
-  font-size: var(--fs-0);
 }
 
 nav li {
@@ -90,12 +108,24 @@ nav li+li {
   margin: 0;
 }
 
-h2,
-p {
+h1 {
+  font-size: var(--fs-3);
   text-align: center;
 }
 
-main {
+h2 {
+  font-size: var(--fs-2);
+}
+
+h3 {
+  font-size: var(--fs-1);
+}
+
+h2+ul {
+  margin-inline-start: 1.5rem;
+}
+
+main.flex {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -103,6 +133,12 @@ main {
 
 .home {
   justify-content: flex-end;
+}
+
+.error-page svg {
+  max-width: 600px;
+  height: auto;
+  stroke: none;
 }
 
 svg {
@@ -125,25 +161,25 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: var(--gap-s);
+  font-size: var(--fs-1);
 }
 
 .buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: var(--gap-m);
   min-height: 56px;
 }
 
 .action {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   gap: 0.1rem;
   font-weight: 400;
 }
 
-.action svg,
-.dice-summary svg {
+.action svg {
   height: 32px;
 }
 
@@ -151,12 +187,8 @@ button {
 .dice {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-  width: 100%;
+  gap: var(--gap-s);
   max-width: min(400px, 100%);
-  background-color: var(--bg-color-800);
-  padding: clamp(1rem, 5%, 2rem);
-  border-radius: 10px;
-  gap: 1rem;
 }
 
 .dice button {
@@ -166,43 +198,81 @@ button {
 }
 
 .dice button svg {
-  height: max(4rem, 5vw);
+  height: max(3.5rem, 4.5vw);
 }
 
 svg g {
   fill: var(--bg-color-900);
 }
 
-/*Dice rolls*/
-ul {
-  list-style: none;
-  height: 34vh;
-  height: 34dvh;
-  overflow-y: auto;
-  padding-inline: 1rem;
-  min-width: 250px;
-  scrollbar-gutter: stable both-edges;
+.dice-input-container {
+  width: min(400px, 100%);
+  background-color: var(--bg-color-800);
+  padding: var(--padding-s);
+  border-radius: 10px;
+  margin-inline: auto;
 }
 
-li {
+.dice-input-container>button {
+  font-size: var(--fs--1);
+  font-weight: 400;
+  border: 0;
+  padding: 0.5rem;
+  margin-block-end: var(--block-s);
+  margin-inline: auto;
+}
+
+.dice-input-container form button {
+  font-size: var(--fs-0);
+}
+
+.dice-input-container form {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.dice-input-container input {
+  margin-inline-end: var(--block-m);
+}
+
+.dice-input-container form label,
+.dice-input-container .warning {
+  flex-basis: 100%;
+}
+
+/*Dice rolls*/
+.rolls {
+  overflow-y: auto;
+  padding-inline: var(--padding-s);
+  min-width: 250px;
+  scrollbar-gutter: stable both-edges;
+  font-size: var(--fs-1);
+}
+
+.rolls li {
   display: grid;
   justify-content: center;
   position: relative;
   border-bottom: 2px solid var(--primary-color);
 }
 
+.rolls.show {
+  height: 30vh;
+  height: 30dvh;
+}
+
 li span {
   display: flex;
-  gap: 1rem;
+  gap: var(--gap-s);
   align-items: center;
 }
 
 .expand {
   grid-column: 1/-1;
   border: 0;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem var(--padding-xs);
   margin: 0.25rem;
-  margin-block-start: 0.25rem;
+  margin-block-start: var(--block-xs);
 }
 
 .expand[aria-expanded="true"] {
@@ -217,7 +287,8 @@ li span {
   background-color: var(--bg-color-800);
 }
 
-.rolls span svg {
+.rolls span svg,
+.dice-summary svg {
   height: 48px;
 }
 
@@ -238,7 +309,7 @@ button[role="switch"] {
 .switch {
   --radius: 30px;
   height: 24px;
-  width: 50px;
+  width: 44px;
   border-radius: var(--radius);
   border: 2px solid var(--primary-color);
   background: var(--bg-color-800);
@@ -263,7 +334,7 @@ button[role="switch"] .switch::after {
 }
 
 button[aria-checked="true"] .switch::after {
-  transform: translateX(26px);
+  transform: translateX(100%);
 }
 
 /*Dropdown menus*/
@@ -280,7 +351,7 @@ button[aria-checked="true"] .switch::after {
   font-weight: 300;
   padding-inline: 0.5rem;
   background-color: var(--bg-color-800);
-  gap: 0.5rem;
+  gap: var(--gap-xs);
   justify-content: flex-start;
   position: relative;
   font-size: var(--fs--1);
@@ -308,7 +379,7 @@ section {
 .dice-summary span {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--gap-xs);
 }
 
 section header {
@@ -317,7 +388,7 @@ section header {
   justify-content: space-between;
   position: relative;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--gap-xs);
 }
 
 .only-svg-btn {
@@ -326,14 +397,14 @@ section header {
 
 section article {
   position: relative;
-  padding: 1rem;
+  padding: var(--padding-s);
   border-bottom: 2px solid var(--primary-color);
 }
 
 .dice-summary {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: var(--gap-s);
 }
 
 /*Message and modal*/
@@ -343,8 +414,7 @@ aside {
   top: 0;
   left: 0;
   background-color: var(--bg-color-900);
-  padding: 1rem;
-  font-size: var(--fs-0);
+  padding: var(--padding-s);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -367,14 +437,15 @@ aside {
   flex-direction: column;
   align-items: center;
   width: min(500px, 100% - 2rem);
-  padding: 2rem;
+  padding: var(--padding-m);
   background-color: var(--bg-color-900);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: var(--fs-0);
   border: 3px solid var(--primary-color);
+  overflow: auto;
+  max-height: 100%;
 }
 
 .modal .only-svg-btn {
@@ -383,19 +454,19 @@ aside {
 
 .modal>div>div {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--gap-m);
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.modal form {
+form {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
 }
 
-.modal input {
+input {
   background-color: var(--bg-color-900);
   border-bottom: 2px solid var(--primary-color);
   color: var(--primary-color);
@@ -404,50 +475,88 @@ aside {
 .warning {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--gap-xs);
+  font-size: var(--fs--1);
+}
+
+.modal h2 {
+  text-align: center;
 }
 
 /*States*/
 button:not([role="switch"]):hover,
-button:not([role="switch"]):active {
+button:not([role="switch"]):active,
+button:not([role="switch"]):focus-visible {
   background-color: var(--primary-color);
   color: var(--bg-color-900);
 }
 
 button:hover svg,
-button:active svg {
+button:active svg,
+button:focus-visible svg {
   fill: var(--bg-color-900);
 }
 
 .dice button:hover,
 .dice button:hover svg,
 .dice button:active,
-.dice button:active svg {
+.dice button:active svg,
+.dice button:focus-visible,
+.dice button:focus-visible svg {
   background-color: transparent;
   stroke: var(--primary-color);
 }
 
 .dice button:hover svg g,
-.dice button:active svg g {
+.dice button:active svg g,
+.dice button:focus-visible svg g {
   fill: var(--primary-color);
 }
 
 a {
   text-decoration: none;
   color: var(--primary-color);
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid var(--primary-color);
   padding-block-end: 0.25rem;
+}
+
+nav a {
+  border-color: transparent;
 }
 
 a:hover,
 a:active,
+a:focus-visible,
 a[aria-current="page"] {
-  border-color: var(--primary-color);
+  color: var(--primary-color-light);
+  border-color: var(--primary-color-light);
+}
+
+*:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 5px;
+  z-index: 1;
+}
+
+@supports selector(:focus-visible) {
+  *:focus {
+    outline: 0;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 5px;
+    z-index: 1;
+  }
 }
 
 @media screen and (min-width: 800px) {
   .dice {
     max-width: min(1200px, 100%);
+  }
+
+  .dice-input-container {
+    width: min(1200px, 100%);
   }
 }
 
