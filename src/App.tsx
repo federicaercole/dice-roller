@@ -1,5 +1,5 @@
 import { Menu } from './components/Menu';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { MessageOutletContext } from './components/types';
 import useOpenStatus from './components/useOpenStatus';
@@ -12,17 +12,33 @@ function App() {
   const closeBtn = useRef<HTMLButtonElement>(null);
   const { isOpen, setIsOpen } = useOpenStatus(openMessage, closeBtn, setMessage);
 
+  const location = useLocation();
+
   useEffect(() => {
+    const titles: { [key: string]: string } = {
+      '/': 'Dice Roller',
+      '/about': 'About Dice Roller',
+      '/settings': 'Settings - Dice Roller',
+    }
+
     if (message !== "") {
       setIsOpen(true);
     }
-  }, [message, setIsOpen])
+
+    document.title = titles[location.pathname] ?? 'Page Not Found - Dice Roller';
+  }, [message, setIsOpen, location, isOpen])
+
+  const navRef = useRef<HTMLElement>(null)
 
   return (<>
-    {isOpen && <aside ref={openMessage}>{message}<button type="button" className="only-svg-btn" ref={closeBtn} onClick={() => { setIsOpen(false); setMessage("") }}>
-      <Close /><span className="visually-hidden">Close</span></button></aside>}
+    {isOpen && <aside ref={openMessage}>
+      <span role="status">{message}</span>
+      <button type="button" className="only-svg-btn" ref={closeBtn} aria-label="Dismiss" onClick={() => { setIsOpen(false); setMessage("") }}>
+        <Close /></button></aside>}
+    <Link className="skip-link" to="#menu" onClick={() => { if (navRef.current) navRef.current.focus() }}>Skip to navigation</Link>
     <Outlet context={[message, setMessage] satisfies MessageOutletContext} />
-    <Menu />
+    <Menu innerRef={navRef} />
+    <ScrollRestoration />
   </>)
 }
 

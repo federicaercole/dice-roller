@@ -52,7 +52,7 @@ function LoadModal({ setIsOpen, set, setRef, setMessage }: ModalProps) {
 
     return (<>
         <p>Do you want to load this set?</p>
-        <div>
+        <div className="buttons">
             <button type="button" ref={setRef} onClick={() => setIsOpen(false)} >No</button>
             <button type="button" ref={setRef} onClick={() => {
                 if (isSet(set)) {
@@ -71,7 +71,7 @@ function ResetModal({ setIsOpen, setRef, setMessage }: ModalProps) {
 
     return (<>
         <p>All the dice sets will be deleted. You cannot retrieve the saved sets if you reset the app!</p>
-        <div>
+        <div className="buttons">
             <button type="button" ref={setRef} onClick={() => setIsOpen(false)} >No</button>
             <button type="button" ref={setRef} onClick={() => {
                 resetApp();
@@ -87,7 +87,7 @@ function DeleteModal({ setIsOpen, set, setRef, setMessage }: ModalProps) {
 
     return (<>
         <p>It will be gone forever!</p>
-        <div>
+        <div className="buttons">
             <button type="button" ref={setRef} onClick={() => setIsOpen(false)} >No</button>
             <button type="button" ref={setRef} onClick={() => {
                 if (isSet(set)) {
@@ -119,7 +119,9 @@ function FormModal({ setIsOpen, set, setRef, setMessage, message }: ModalProps) 
     return (<Form callback={handleFormSubmit} >
         <Field label="Set name" name="name" handle={setName} error={errors?.name ?? ""} />
         <Field label="Dice (example: 4d6+1d8)" name="dice" handle={diceSet} error={errors?.dice ?? ""} />
-        {errors && <p className="visually-hidden" aria-live="assertive">Failed to save because there are invalid fields</p>}
+        {errors && <p className="visually-hidden" aria-live="assertive">Failed to save set.
+            {Object.values(errors).map(error => <span key={error}>{error}</span>)}
+        </p>}
         <button type="submit" ref={setRef}>Save set</button>
     </Form>)
 }

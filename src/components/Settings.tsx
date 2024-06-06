@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import { useRef } from "react";
 import { maxNumberOfSets } from "./utils";
 import { useModal } from "./useModal";
+import { Heading } from "./Heading";
 
 function Settings() {
     const modal = useRef<HTMLDivElement>(null);
@@ -15,7 +16,7 @@ function Settings() {
     const toggleVisibility = (value: string) => useDiceStore.setState(produce(state => { state.settings.visibility[value] = !state.settings.visibility[value] }));
 
     return (<main className="flex">
-        <h1>Settings</h1>
+        <Heading>Settings</Heading>
         <button type="button" role="switch" aria-checked={settings.visibility.sum} onClick={() => toggleVisibility("sum")}>
             <span className="switch"></span>
             Show sum</button>
