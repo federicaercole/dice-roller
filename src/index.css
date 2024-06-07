@@ -19,6 +19,10 @@ button {
   padding: 0.5rem;
 }
 
+img {
+  max-width: 100%;
+}
+
 .flex ul,
 nav ul {
   list-style: none;
@@ -48,7 +52,7 @@ nav ul {
 
 main>*+*:not(.modal, .dice-summary),
 article>*+*,
-#root>*:not(aside)+*,
+#root>*:not(aside, a)+*,
 .modal>div>*+*,
 .modal form>*+* {
   margin-block-start: var(--block-m);
@@ -62,7 +66,8 @@ li+li,
   margin-block-start: var(--block-s);
 }
 
-.visually-hidden {
+.visually-hidden,
+.skip-link {
   position: absolute;
   left: -10000px;
   top: auto;
@@ -79,10 +84,14 @@ body {
   background-color: var(--bg-color-900);
 }
 
+p {
+  line-height: 1.5;
+}
+
 #root {
   display: grid;
   grid-template-rows: 1fr auto;
-  max-width: 1200px;
+  max-width: 75rem;
   padding: var(--padding-s);
   min-height: 100vh;
   min-height: 100dvh;
@@ -96,12 +105,12 @@ footer {
 nav ul {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gap-m);
-  height: auto;
+  gap: var(--gap-s);
 }
 
 nav li {
   border: 0;
+  flex-basis: 100%;
 }
 
 nav li+li {
@@ -121,8 +130,29 @@ h3 {
   font-size: var(--fs-1);
 }
 
-h2+ul {
+h2+ul,
+h1+ol {
   margin-inline-start: 1.5rem;
+}
+
+strong {
+  font-size: var(--fs-1);
+  background-color: var(--bg-color-800);
+  padding: 0.5rem;
+}
+
+figure {
+  display: table;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+figcaption {
+  display: table-caption;
+  caption-side: bottom;
+  background-color: var(--bg-color-800);
+  padding: 0.5rem;
+  font-size: var(--fs--1);
 }
 
 main.flex {
@@ -169,12 +199,12 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--gap-m);
+  gap: var(--gap-s);
   min-height: 56px;
 }
 
 .action {
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem;
   gap: 0.1rem;
   font-weight: 400;
 }
@@ -220,6 +250,7 @@ svg g {
   padding: 0.5rem;
   margin-block-end: var(--block-s);
   margin-inline: auto;
+  gap: 0.5rem;
 }
 
 .dice-input-container form button {
@@ -229,10 +260,6 @@ svg g {
 .dice-input-container form {
   flex-direction: row;
   flex-wrap: wrap;
-}
-
-.dice-input-container input {
-  margin-inline-end: var(--block-m);
 }
 
 .dice-input-container form label,
@@ -285,6 +312,20 @@ li span {
   font-size: var(--fs-4);
   text-align: center;
   background-color: var(--bg-color-800);
+}
+
+.sum span {
+  animation: roll-animation 0.6s ease-out both;
+}
+
+@keyframes roll-animation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .rolls span svg,
@@ -379,7 +420,7 @@ section {
 .dice-summary span {
   display: flex;
   align-items: center;
-  gap: var(--gap-xs);
+  gap: 0.5rem;
 }
 
 section header {
@@ -452,13 +493,6 @@ aside {
   align-self: flex-end;
 }
 
-.modal>div>div {
-  display: flex;
-  gap: var(--gap-m);
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 form {
   display: flex;
   flex-direction: column;
@@ -475,7 +509,7 @@ input {
 .warning {
   display: flex;
   align-items: center;
-  gap: var(--gap-xs);
+  gap: 0.5rem;
   font-size: var(--fs--1);
 }
 
@@ -517,7 +551,7 @@ a {
   text-decoration: none;
   color: var(--primary-color);
   border-bottom: 2px solid var(--primary-color);
-  padding-block-end: 0.25rem;
+  padding-block-end: 0.1rem;
 }
 
 nav a {
@@ -538,6 +572,22 @@ a[aria-current="page"] {
   z-index: 1;
 }
 
+h1:focus,
+nav:focus {
+  outline: none;
+}
+
+.skip-link:focus {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-color-900);
+  margin: 0 auto !important;
+  width: max-content;
+  height: max-content;
+  padding: 1rem;
+  z-index: 20;
+}
+
 @supports selector(:focus-visible) {
   *:focus {
     outline: 0;
@@ -550,13 +600,28 @@ a[aria-current="page"] {
   }
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .dice {
-    max-width: min(1200px, 100%);
+    max-width: min(75rem, 100%);
   }
 
   .dice-input-container {
-    width: min(1200px, 100%);
+    width: min(75rem, 100%);
+  }
+
+  nav ul {
+    gap: var(--gap-m);
+  }
+}
+
+@media screen and (min-width: 25rem) {
+
+  nav li {
+    flex-basis: auto;
+  }
+
+  .dice-input-container input {
+    margin-inline-end: var(--block-m);
   }
 }
 

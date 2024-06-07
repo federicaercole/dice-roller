@@ -11,6 +11,7 @@ function App() {
   const openMessage = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
   const { isOpen, setIsOpen } = useOpenStatus(openMessage, closeBtn, setMessage);
+  const navRef = useRef<HTMLElement>(null);
 
   const location = useLocation();
 
@@ -19,6 +20,7 @@ function App() {
       '/': 'Dice Roller',
       '/about': 'About Dice Roller',
       '/settings': 'Settings - Dice Roller',
+      '/guide': 'How to use this app - Dice Roller',
     }
 
     if (message !== "") {
@@ -27,8 +29,6 @@ function App() {
 
     document.title = titles[location.pathname] ?? 'Page Not Found - Dice Roller';
   }, [message, setIsOpen, location, isOpen])
-
-  const navRef = useRef<HTMLElement>(null)
 
   return (<>
     {isOpen && <aside ref={openMessage}>

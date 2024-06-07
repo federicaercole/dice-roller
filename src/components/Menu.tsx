@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
-export function Menu() {
+export function Menu({ innerRef }: { innerRef: React.RefObject<HTMLElement> }) {
 
     return (<footer>
-        <nav id="menu">
+        <nav id="menu" tabIndex={-1} ref={innerRef}>
             <ul>
-                <li><Link to="/">Home</Link></li>
-                <li>How to use</li>
-                <li><Link to="/settings">Settings</Link></li>
-                <li>About</li>
+                <li><NavLink to="/">Home</NavLink></li>
+                <li><NavLink to="/settings">Settings</NavLink></li>
+                <li><NavLink to="/guide">Guide</NavLink></li>
+                <li><NavLink to="/about">About</NavLink></li>
             </ul>
         </nav>
     </footer>)
