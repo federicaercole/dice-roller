@@ -92,7 +92,7 @@ p {
   display: grid;
   grid-template-rows: 1fr auto;
   max-width: 75rem;
-  padding: var(--padding-s);
+  padding: var(--padding-m);
   min-height: 100vh;
   min-height: 100dvh;
   margin-inline: auto;
@@ -504,6 +504,7 @@ input {
   background-color: var(--bg-color-900);
   border-bottom: 2px solid var(--primary-color);
   color: var(--primary-color);
+  border-radius: 0;
 }
 
 .warning {
@@ -611,6 +612,10 @@ nav:focus {
 
   nav ul {
     gap: var(--gap-m);
+  }
+
+  #root {
+    padding: var(--padding-s);
   }
 }
 

@@ -25,6 +25,9 @@ function App() {
 
     if (message !== "") {
       setIsOpen(true);
+      if (isOpen && closeBtn.current) {
+        closeBtn.current.focus();
+      }
     }
 
     document.title = titles[location.pathname] ?? 'Page Not Found - Dice Roller';
